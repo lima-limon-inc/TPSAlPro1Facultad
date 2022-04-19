@@ -1,6 +1,12 @@
-MATRIZ_COLUMNAS = 5
-MATRIZ_FILAS    = 8
+# Imports
+from random import randint
 
+# Constantes globales
+MATRIZ_COLUMNAS = 2
+MATRIZ_FILAS    = 2
+
+
+# Funciones
 def generar_cantidad_cuadrados():
     '''
     Funcion que genera una lista de numeros, dependiendo de la cantidad de filas y columnas
@@ -15,7 +21,6 @@ def generar_cantidad_cuadrados():
 
     return lista_con_cuadrados
     
-
 def generar_matriz():
     '''
     Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales MATRIZ_FILAS & MATRIZ_COLUMNAS
@@ -36,10 +41,15 @@ def generar_matriz():
 
         for cuadrado in range(MATRIZ_COLUMNAS):
             cuadrados.pop(0)
-            
 
-    return matriz
+        return matriz
 
 # Funciones debug BORRAR DESPUES
 print(generar_matriz())
 #print(generar_cantidad_cuadrados())
+
+# Funcion para que queda linda la matriz, anadir ljust y rjust
+#for i in range(len(matriz)):
+#        print(matriz[i])
+    
+

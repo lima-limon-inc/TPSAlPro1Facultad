@@ -1,7 +1,9 @@
 # Plan General TP
 
 ## Funciones
-- [ ] Funcion que genera una matriz de nxm dimesiones
+- [x] Funcion que genera una matriz de nxm dimesiones
+	- [X] TODO: Hacer que la matriz se vea prolija, derechita
+	- [ ] TODO: If else. Las columnas y filas tienen que ser como minimo de 2 de largo
 - [ ] Funcion que ponga las fichas en lugares aleatorios
 	- Generas un juego ya resuelto y despues haces que las fichas se muevan aleatoriamente.
 - [ ] Funcion que interprete el input del usuario
