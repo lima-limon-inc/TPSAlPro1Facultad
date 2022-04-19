@@ -1,5 +1,5 @@
-MATRIZ_COLUMNAS = 7
-MATRIZ_FILAS    = 5
+MATRIZ_COLUMNAS = 5
+MATRIZ_FILAS    = 8
 
 def generar_cantidad_cuadrados():
     '''
@@ -9,7 +9,7 @@ def generar_cantidad_cuadrados():
     cantidad_de_cuadrados = MATRIZ_COLUMNAS * MATRIZ_FILAS
     lista_con_cuadrados = []
 
-    for i in range(1,cantidad_de_cuadrados):
+    for i in range(1,cantidad_de_cuadrados): #Arranca desde 1 porque el 0 no es usado en el juego
         lista_con_cuadrados.append(i)
     lista_con_cuadrados.append("")
 
@@ -27,12 +27,19 @@ def generar_matriz():
     ]
     '''
     matriz = [] 
+    cuadrados = generar_cantidad_cuadrados()
+
     for fila in range(MATRIZ_FILAS):
         matriz.append([])
         for columna in range(MATRIZ_COLUMNAS):
-            matriz[fila].append(columna)
+            matriz[fila].append(cuadrados[columna])
+
+        for cuadrado in range(MATRIZ_COLUMNAS):
+            cuadrados.pop(0)
+            
+
     return matriz
 
 # Funciones debug BORRAR DESPUES
-#print(generar_matriz())
-print(generar_cantidad_cuadrados())
+print(generar_matriz())
+#print(generar_cantidad_cuadrados())
