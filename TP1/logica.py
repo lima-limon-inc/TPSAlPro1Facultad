@@ -44,7 +44,7 @@ def generar_matriz():
     
     return matriz
 
-def aleatorizar_matriz(movimientos): #Movimientos es una lista
+def mover_vacio(movimientos): #Movimientos es una lista
     '''
     Funcion que, dada una matriz, aleatoriza todas las posiciones
     '''
@@ -94,7 +94,7 @@ def aleatorizar_matriz(movimientos): #Movimientos es una lista
         print(matriz[i])     
 
 # Funciones debug BORRAR DESPUES
-aleatorizar_matriz(["Abajo","Derecha","Derecha","Abajo","Izquierda","Arriba","Derecha"])
+mover_vacio(["Derecha","Derecha","Abajo","Abajo","Arriba","Izquierda","Abajo"])
 #print(generar_cantidad_cuadrados())
 
 # Funcion para que queda linda la matriz, anadir ljust y rjust
