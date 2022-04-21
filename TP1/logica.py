@@ -2,8 +2,8 @@
 from random import randint
 
 # Constantes globales
-MATRIZ_COLUMNAS = 4
-MATRIZ_FILAS    = 4
+MATRIZ_COLUMNAS = 4  
+MATRIZ_FILAS    = 4 
 ESPACIO_VACIO   = "E"
 
 # Funciones
@@ -60,7 +60,7 @@ def mover_vacio(movimientos): #Movimientos es una lista
 
 
     for movimiento in movimientos:
-        if movimiento == "Abajo": 
+        if movimiento == "Abajo":  
             #Ejecuta lo de abajo si y solo si el vacio no esta arriba de todo (esto mismo aplica para los otros 4)
             if coord_vacio[0] != 0: 
                 #Coordenada del vacio en matriz        Coordenada de misma columna, 1 fila arriba   
@@ -74,7 +74,7 @@ def mover_vacio(movimientos): #Movimientos es una lista
                 coord_vacio[1] = coord_vacio[1] - 1
 
         if movimiento == "Arriba": 
-            if coord_vacio[0] != 0: 
+            if coord_vacio[0] != MATRIZ_FILAS - 1: 
                 #Coordenada del vacio en matriz        Coordenada de misma columna, 1 fila abajo   
                 matriz[coord_vacio[0]][coord_vacio[1]],matriz[coord_vacio[0] + 1][coord_vacio[1]] = matriz[coord_vacio[0] + 1][coord_vacio[1]],matriz[coord_vacio[0]][coord_vacio[1]]
                 coord_vacio[0] = coord_vacio[0] + 1
@@ -94,11 +94,11 @@ def mover_vacio(movimientos): #Movimientos es una lista
         print(matriz[i])     
 
 # Funciones debug BORRAR DESPUES
-mover_vacio(["Derecha","Derecha","Abajo","Abajo","Arriba","Izquierda","Abajo"])
+mover_vacio(["Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba",])
 #print(generar_cantidad_cuadrados())
 
 # Funcion para que queda linda la matriz, anadir ljust y rjust
 #for i in range(len(matriz)):
 #        print(matriz[i])
     
-
+# input 
