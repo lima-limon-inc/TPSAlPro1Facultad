@@ -1,11 +1,27 @@
-matriz = []
+# IMPORTS
+from logica import *
 
-elemento = 1
 
-for fila in range(4):
-    matriz.append([])
-    for column in range(4):
-        matriz[fila].append(elemento)
-        elemento += 1
-matriz[-1][-1] = "E"
-print(matriz)
+# Funcion principal
+
+def main():
+    '''
+    1er elemento: Matriz del juego en su estado actual. Tipo: Lista de listas
+    2do elemento: Coordenada del espacio vacio. Tipo lista
+    3er elemento: CANTIDAD de movimientos del jugador. Tipo: Integer
+    4to elemento: Movimientos del jugador. Tipo: String
+    '''
+    estado_del_juego = [generar_matriz(),[ULTIMA_FILA, ULTIMA_COLU], 0, ""] 
+
+    matriz = estado_del_juego[0]
+    coord_vacio = estado_del_juego[1]
+    cant_movimientos = estado_del_juego[2]
+    movimientos_jugador = estado_del_juego[3]
+
+    while True: 
+        mostrar_juego(matriz)
+        print(f"DEBUG: {movimientos_jugador}")
+        movimientos_jugador += input("Entrada:")
+        mover_vacio(movimientos_jugador, coord_vacio, matriz)
+
+main()
