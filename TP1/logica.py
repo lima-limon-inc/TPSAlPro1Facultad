@@ -2,25 +2,11 @@
 from random import randint
 
 # Constantes globales
-MATRIZ_COLUMNAS = 4  
-MATRIZ_FILAS    = 4 
+MATRIZ_COLUMNAS = 6
+MATRIZ_FILAS    = 3 
 ESPACIO_VACIO   = "E"
 
 # Funciones
-def generar_cantidad_cuadrados():
-    '''
-    Funcion que genera una lista de numeros, dependiendo de la cantidad de filas y columnas
-    La formula para hallar esto es (MATRIZ_FILAS x MATRIZ_COLUMNAS) - 1
-    '''
-    cantidad_de_cuadrados = MATRIZ_COLUMNAS * MATRIZ_FILAS
-    lista_con_cuadrados = []
-
-    for i in range(1,cantidad_de_cuadrados): #Arranca desde 1 porque el 0 no es usado en el juego
-        lista_con_cuadrados.append(i)
-    lista_con_cuadrados.append(ESPACIO_VACIO)
-
-    return lista_con_cuadrados
-    
 def generar_matriz():
     '''
     Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales MATRIZ_FILAS & MATRIZ_COLUMNAS
@@ -32,21 +18,21 @@ def generar_matriz():
     ]
     '''
     matriz = [] 
-    cuadrados = generar_cantidad_cuadrados()
-
+    valor_celda = 1
+    
     for fila in range(MATRIZ_FILAS):
         matriz.append([])
         for columna in range(MATRIZ_COLUMNAS):
-            matriz[fila].append(cuadrados[columna])
+            matriz[fila].append(valor_celda)
+            valor_celda += 1
 
-        for cuadrado in range(MATRIZ_COLUMNAS):
-            cuadrados.pop(0)
+    matriz[-1][-1] = "E"
     
     return matriz
 
 def mover_vacio(movimientos): #Movimientos es una lista
     '''
-    Funcion que, dada una matriz, aleatoriza todas las posiciones
+    Funcion que, dada una matriz, aleatoriza todas las posiciones #TODO: CAMBIAR COMENTARIO
     '''
 
     matriz = generar_matriz() #TODO: Cambiar nombre
@@ -55,35 +41,37 @@ def mover_vacio(movimientos): #Movimientos es una lista
     
     print()
     coord_vacio = [MATRIZ_FILAS - 1, MATRIZ_COLUMNAS - 1] #TODO: BORRAR coord_vacio[0] = Fila; #coord_vacio[1] = Columna
+    vacio_fila = coord_vacio[0]
+    vacio_colu = coord_vacio[1]
     print(coord_vacio)
     print()
 
 
     for movimiento in movimientos:
         if movimiento == "Abajo":  
-            #Ejecuta lo de abajo si y solo si el vacio no esta arriba de todo (esto mismo aplica para los otros 4)
-            if coord_vacio[0] != 0: 
-                #Coordenada del vacio en matriz        Coordenada de misma columna, 1 fila arriba   
-                matriz[coord_vacio[0]][coord_vacio[1]],matriz[coord_vacio[0] - 1][coord_vacio[1]] = matriz[coord_vacio[0] - 1][coord_vacio[1]],matriz[coord_vacio[0]][coord_vacio[1]]
-                coord_vacio[0] = coord_vacio[0] - 1
+            if vacio_fila != 0: #Ejecuta lo de abajo si y solo si el espacio vacio no esta en la fila 0.
 
-        if movimiento == "Derecha":
-            if coord_vacio[1] != 0:
-                #Coordenada del vacio en matriz        Coordenada de misma columna, 1 column  izq
-                matriz[coord_vacio[0]][coord_vacio[1]],matriz[coord_vacio[0]][coord_vacio[1] - 1] = matriz[coord_vacio[0]][coord_vacio[1] - 1],matriz[coord_vacio[0]][coord_vacio[1]]
-                coord_vacio[1] = coord_vacio[1] - 1
+                matriz[vacio_fila][vacio_colu],matriz[vacio_fila - 1][vacio_colu] = matriz[vacio_fila - 1][vacio_colu],matriz[vacio_fila][vacio_colu]
+                vacio_fila = vacio_fila - 1
 
-        if movimiento == "Arriba": 
-            if coord_vacio[0] != MATRIZ_FILAS - 1: 
-                #Coordenada del vacio en matriz        Coordenada de misma columna, 1 fila abajo   
-                matriz[coord_vacio[0]][coord_vacio[1]],matriz[coord_vacio[0] + 1][coord_vacio[1]] = matriz[coord_vacio[0] + 1][coord_vacio[1]],matriz[coord_vacio[0]][coord_vacio[1]]
-                coord_vacio[0] = coord_vacio[0] + 1
+        if movimiento == "Arriba": #Ejecuta lo de abajo si y solo si el espacio vacio no esta en la ultima fila.
+            if vacio_fila != MATRIZ_FILAS - 1: 
 
-        if movimiento == "Izquierda":
-            if coord_vacio[1] != MATRIZ_COLUMNAS - 1:
-                #Coordenada del vacio en matriz        Coordenada de misma columna, 1 column der
-                matriz[coord_vacio[0]][coord_vacio[1]],matriz[coord_vacio[0]][coord_vacio[1] + 1] = matriz[coord_vacio[0]][coord_vacio[1] + 1],matriz[coord_vacio[0]][coord_vacio[1]]
-                coord_vacio[1] = coord_vacio[1] + 1
+                matriz[vacio_fila][vacio_colu],matriz[vacio_fila + 1][vacio_colu] = matriz[vacio_fila + 1][vacio_colu],matriz[vacio_fila][vacio_colu]
+                vacio_fila = vacio_fila + 1
+
+        if movimiento == "Derecha" :#Ejecuta lo de abajo si y solo si el espacio vacio no esta en la primera columna
+            if vacio_colu != 0:
+
+                matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu - 1] = matriz[vacio_fila][vacio_colu - 1],matriz[vacio_fila][vacio_colu]
+                vacio_colu = vacio_colu - 1
+
+        if movimiento == "Izquierda" :#Ejecuta lo de abajo si y solo si el espacio vacio no esta en la ultima columna
+            if vacio_colu != MATRIZ_COLUMNAS - 1:
+
+                matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu + 1] = matriz[vacio_fila][vacio_colu + 1],matriz[vacio_fila][vacio_colu]
+                # a,b = b,a
+                vacio_colu = vacio_colu + 1
        
 
     print()
