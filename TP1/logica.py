@@ -3,12 +3,12 @@ from random import randint
 
 # Constantes globales 
 ## Constantes globales relacionada a la matriz
-NUMERO_COLU  = 6
+NUMERO_COLU  = 8
 NUMERO_FILA  = 3 
 ULTIMA_COLU  = NUMERO_COLU - 1
 ULTIMA_FILA  = NUMERO_FILA - 1
 
-## Constantes controles
+## Constantes relacionadas a los controles
 CONTROLES    = ("w","s","a","d") #1ero: Arriba; 2do:Abajo; 3ro: Izquierda; 4to: Derecha
 MOV_ARRIBA   = CONTROLES[0]
 MOV_ABAJO    = CONTROLES[1]
@@ -22,7 +22,7 @@ ESPACIO_VACIO = "E"
 def generar_matriz():
     '''
     Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales NUMERO_FILA & NUMERO_COLU
-    ejemplo de Matriz 3x3
+    Ejemplo de como se deberia ver una matriz 3x3
     [
     [a,b,c],
     [d,e,f],
@@ -41,63 +41,75 @@ def generar_matriz():
 
     return matriz
 
-def mostrar_juego(matriz):
+def mostrar_juego(matriz,historial_movimeintos):
     for i in range(4):
         print()
 
     for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
         print(matriz[i])
-    
+       
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
+    print("Cantidad de movimientos: " + str(len(historial_movimeintos)))
 
 
-def mover_vacio(movimientos, coord_vacio, matriz): #Movimientos es una lista
+def mover_vacio(movimientos, coord_vacio, matriz, historial_movimientos): #Movimientos es una lista
+    vacio_fila = coord_vacio[0]
+    vacio_colu = coord_vacio[1]
 
     for movimiento in movimientos:
-        if movimiento not in CONTROLES:
-            print("DEBUG MOVIMIENTO INVALIDO")
+        movimientos = movimientos[1:] #Apenas un movimiento es procesado quiero sacarlo de la "lista" de movimientos
 
+
+       #print("DEBUG CHEQUER OUTPUT: " + str(es_movimiento_valido(movimiento,vacio_fila, vacio_colu)))
+        if es_movimiento_valido(movimiento, vacio_fila, vacio_colu) == False:
+            break
 
         if movimiento == MOV_ABAJO:  
-            if coord_vacio[0] != 0: #Ejecuta lo de abajo si y solo si el espacio vacio no esta en la fila 0.
-
-                matriz[coord_vacio[0]][vacio_colu],matriz[coord_vacio[0] - 1][vacio_colu] = matriz[coord_vacio[0] - 1][vacio_colu],matriz[coord_vacio[0]][vacio_colu]
-                coord_vacio[0] = coord_vacio[0] - 1
+            matriz[vacio_fila][vacio_colu],matriz[vacio_fila - 1][vacio_colu] = matriz[vacio_fila - 1][vacio_colu],matriz[vacio_fila][vacio_colu]
+            vacio_fila = vacio_fila - 1
 
         if movimiento == MOV_ARRIBA: #Ejecuta lo de abajo si y solo si el espacio vacio no esta en la ultima fila.
-            if coord_vacio[0] != NUMERO_FILA - 1: 
-
-                matriz[coord_vacio[0]][vacio_colu],matriz[coord_vacio[0] + 1][vacio_colu] = matriz[coord_vacio[0] + 1][vacio_colu],matriz[coord_vacio[0]][vacio_colu]
-                coord_vacio[0] = coord_vacio[0] + 1
+            matriz[vacio_fila][vacio_colu],matriz[vacio_fila + 1][vacio_colu] = matriz[vacio_fila + 1][vacio_colu],matriz[vacio_fila][vacio_colu]
+            vacio_fila = vacio_fila + 1
 
         if movimiento == MOV_DERECHA:#Ejecuta lo de abajo si y solo si el espacio vacio no esta en la primera columna
-            if vacio_colu != 0:
-
-                matriz[coord_vacio[0]][vacio_colu],matriz[coord_vacio[0]][vacio_colu - 1] = matriz[coord_vacio[0]][vacio_colu - 1],matriz[coord_vacio[0]][vacio_colu]
-                vacio_colu = vacio_colu - 1
+            matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu - 1] = matriz[vacio_fila][vacio_colu - 1],matriz[vacio_fila][vacio_colu]
+            vacio_colu = vacio_colu - 1
 
         if movimiento == MOV_IZQUIERDA :#Ejecuta lo de abajo si y solo si el espacio vacio no esta en la ultima columna
-            if vacio_colu != NUMERO_COLU - 1:
+            matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu + 1] = matriz[vacio_fila][vacio_colu + 1],matriz[vacio_fila][vacio_colu]
+            vacio_colu = vacio_colu + 1
+        historial_movimientos.append(movimiento) 
+        
+    return movimientos, (vacio_fila, vacio_colu), matriz, historial_movimientos
 
-                matriz[coord_vacio[0]][vacio_colu],matriz[coord_vacio[0]][vacio_colu + 1] = matriz[coord_vacio[0]][vacio_colu + 1],matriz[coord_vacio[0]][vacio_colu]
-                # a,b = b,a
-                vacio_colu = vacio_colu + 1
-       
 
-   #print()
-   #print(coord_vacio)
-   #print()
+def generador_de_movs(cantidad_de_movs):
+    pass
 
-    for i in range(len(matriz)):
-        print(matriz[i])     
+def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
+    '''
+    Funcion que dada un movimiento y una matriz, devuelve un booleano que determina si el movimiento es valido o invalido
+    '''
 
-# Funciones debug BORRAR DESPUES
-#mover_vacio(["Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Arriba","Abajo",])
-#print(generar_cantidad_cuadrados())
+    print(f"DEBUG CHEQUEAR MOVIMIENTO {mov_a_chequear}")
 
-# Funcion para que queda linda la matriz, anadir ljust y rjust
-#for i in range(len(matriz)):
-#        print(matriz[i])
+    if mov_a_chequear not in CONTROLES:
+        return False
     
-# input 
+    if mov_a_chequear == MOV_ABAJO and vacio_fila == 0: #Intenta moverse para abajo, pero como no hay fichas encima del vacio esto es invalido
+        return False 
+
+    if mov_a_chequear == MOV_ARRIBA and vacio_fila == ULTIMA_FILA:
+        return False 
+
+    if mov_a_chequear == MOV_DERECHA and vacio_colu == 0:
+        return False 
+
+    if mov_a_chequear == MOV_IZQUIERDA and vacio_colu == ULTIMA_COLU:
+        return False 
+    
+    else:
+        return True
+
