@@ -1,5 +1,5 @@
 # Imports
-from random import randint
+from random import choice
 
 # Constantes globales 
 ## Constantes globales relacionada a la matriz
@@ -37,17 +37,38 @@ def generar_matriz():
         for columna in range(NUMERO_COLU):
             matriz[fila].append(valor_celda)
             valor_celda += 1
-    matriz[-1][-1] = "E"
 
-    return matriz
+    matriz[-1][-1] = "E"
+    vacio_fila = ULTIMA_FILA
+    vacio_colu = ULTIMA_COLU
+
+    return matriz, vacio_fila, vacio_colu
+
+def generador_de_movs(cantidad_de_movs):
+    matriz, vacio_fila, vacio_colu = generar_matriz() 
+    
+    movidas_realizadas = []
+
+    for i in range(cantidad_de_movs):
+        jugada_a_realizar = choice(CONTROLES)
+        while es_movimiento_valido(jugada_a_realizar,vacio_fila, vacio_colu) == False:
+            jugada_a_realizar = choice(CONTROLES)
+        DEBUG,vacio_fila, vacio_colu, matriz, DEBUG2 =  mover_vacio(jugada_a_realizar, (vacio_fila, vacio_colu), matriz, [])
+        movidas_realizadas.append(jugada_a_realizar)
+    print(movidas_realizadas)
+
+    for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
+        print(matriz[i])
 
 def mostrar_juego(matriz,historial_movimeintos):
     for i in range(4):
         print()
 
+    print(f"=== Fifteen ===")      
+
     for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
         print(matriz[i])
-       
+
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
     print("Cantidad de movimientos: " + str(len(historial_movimeintos)))
@@ -82,11 +103,9 @@ def mover_vacio(movimientos, coord_vacio, matriz, historial_movimientos): #Movim
             vacio_colu = vacio_colu + 1
         historial_movimientos.append(movimiento) 
         
-    return movimientos, (vacio_fila, vacio_colu), matriz, historial_movimientos
+    return movimientos, vacio_fila, vacio_colu ,matriz, historial_movimientos
 
 
-def generador_de_movs(cantidad_de_movs):
-    pass
 
 def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     '''
@@ -112,4 +131,4 @@ def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     
     else:
         return True
-
+generador_de_movs(10)
