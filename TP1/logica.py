@@ -17,6 +17,7 @@ MOV_IZQUIERDA= CONTROLES[2]
 MOV_DERECHA  = CONTROLES[3]
 SALIR_JUEGO  = "o"
 
+## Constantes relacionadas al display del juego
 ESPACIO_VACIO = " "
 
 # Funciones
@@ -130,3 +131,8 @@ def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     
     else:
         return True
+
+def frase_motivadora():
+    lista_frases = ["'Nada está perdido si se tiene el valor de proclamar que todo está perdido y hay que empezar de nuevo'.-Julio Cortázar", "'Llegará un momento en que creas que todo ha terminado. Ese será el principio.' -Epicuro","'El fracaso es la oportunidad de comenzar de nuevo con más inteligencia'.-Henry Ford"]
+
+    return choice(lista_frases)

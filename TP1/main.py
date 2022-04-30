@@ -1,7 +1,6 @@
 # IMPORTS
 from logica import *
 
-
 # Funcion principal
 
 def main():
@@ -32,7 +31,7 @@ def main():
         
         elif len(historial_movimientos) - CUANTO_MEZCLAR > CUANTO_MEZCLAR * 5:
             mostrar_juego(matriz, historial_movimientos)
-            print("Perdiste! :(")
+            print("Perdiste! :(" + )
             break
 
 main()
