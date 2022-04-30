@@ -87,8 +87,12 @@ def mostrar_juego(matriz,historial_movimeintos):
     print()
 
 def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimientos): #Movimientos es una lista
+    movs_procesados = 0
     for movimiento in movimientos:
         while es_movimiento_valido(movimiento, vacio_fila, vacio_colu) == False:
+            mostrar_juego(matriz, historial_movimientos)
+            print(f"Tu entrada:{movimientos}")
+            print(" " * (len("Tu entrada:") + movs_procesados) +  "^")
             movimiento = input(f"{movimiento} es invalido: ")
 
         if movimiento == MOV_ABAJO:  
@@ -106,6 +110,7 @@ def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimient
         if movimiento == MOV_IZQUIERDA :#Ejecuta lo de abajo si y solo si el espacio vacio no esta en la ultima columna
             matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu + 1] = matriz[vacio_fila][vacio_colu + 1],matriz[vacio_fila][vacio_colu]
             vacio_colu = vacio_colu + 1
+        movs_procesados += 1
         historial_movimientos.append(movimiento) 
 
     return vacio_fila, vacio_colu ,matriz, historial_movimientos
