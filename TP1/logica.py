@@ -19,7 +19,7 @@ SALIR_JUEGO  = "o"
 ESPACIO_VACIO = "E"
 
 # Funciones
-def generar_matriz():
+def generar_matriz(filas, columnas):
     '''
     Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales NUMERO_FILA & NUMERO_COLU
     Ejemplo de como se deberia ver una matriz 3x3
@@ -32,15 +32,15 @@ def generar_matriz():
     matriz = [] 
     valor_celda = 1
     
-    for fila in range(NUMERO_FILA):
+    for fila in range(filas):
         matriz.append([])
-        for columna in range(NUMERO_COLU):
+        for columna in range(columnas):
             matriz[fila].append(valor_celda)
             valor_celda += 1
 
-    matriz[-1][-1] = "E"
-    vacio_fila = ULTIMA_FILA
-    vacio_colu = ULTIMA_COLU
+    matriz[-1][-1] = ESPACIO_VACIO
+    vacio_fila = filas - 1
+    vacio_colu = columnas - 1
 
     return matriz, vacio_fila, vacio_colu
 
