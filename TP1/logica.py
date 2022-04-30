@@ -131,4 +131,4 @@ def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     
     else:
         return True
-generador_de_movs(10)
+generador_de_movs(20)
