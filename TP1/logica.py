@@ -3,11 +3,11 @@ from random import choice, randint
 
 # Constantes globales 
 ## Constantes globales relacionada a la matriz
-NUMERO_COLU  = 4
-NUMERO_FILA  = 4 
+NUMERO_COLU  = 3
+NUMERO_FILA  = 3 
 ULTIMA_COLU  = NUMERO_COLU - 1
 ULTIMA_FILA  = NUMERO_FILA - 1
-MOVER_FICHA  = randint(25,50)
+CUANTO_MEZCLAR  = 10#randint(25,50)
 
 ## Constantes relacionadas a los controles
 CONTROLES    = ("w","s","a","d") #1ero: Arriba; 2do:Abajo; 3ro: Izquierda; 4to: Derecha
@@ -17,7 +17,7 @@ MOV_IZQUIERDA= CONTROLES[2]
 MOV_DERECHA  = CONTROLES[3]
 SALIR_JUEGO  = "o"
 
-ESPACIO_VACIO = "E"
+ESPACIO_VACIO = "M"
 
 # Funciones
 def generar_matriz(filas, columnas):
@@ -40,55 +40,47 @@ def generar_matriz(filas, columnas):
             valor_celda += 1
 
     matriz[-1][-1] = ESPACIO_VACIO
-    vacio_fila = filas - 1
-    vacio_colu = columnas - 1
+    vacio_fila = ULTIMA_FILA
+    vacio_colu = ULTIMA_COLU
 
     return matriz, vacio_fila, vacio_colu
 
-def generar_tablero(filas, columnas):
+def generar_tablero(filas, columnas, cuanto_mezclar):
     
     matriz, vacio_fila, vacio_colu = generar_matriz(filas,columnas)
 
-    cantidad_de_movs = MOVER_FICHA
-    
-    movidas_realizadas = []
+    historial_movimientos = []
 
-    for i in range(cantidad_de_movs):
+    for i in range(cuanto_mezclar):
         jugada_a_realizar = choice(CONTROLES)
 
         while es_movimiento_valido(jugada_a_realizar,vacio_fila, vacio_colu) == False:
             jugada_a_realizar = choice(CONTROLES)
 
-        vacio_fila, vacio_colu, matriz =  mover_vacio(jugada_a_realizar, vacio_fila, vacio_colu, matriz, [])[1:4]
+        vacio_fila, vacio_colu, matriz, historial_movimientos =  mover_vacio(jugada_a_realizar, vacio_fila, vacio_colu, matriz, historial_movimientos)
 
-        movidas_realizadas.append(jugada_a_realizar)
-    
-    return matriz, vacio_fila, vacio_colu, movidas_realizadas
+    print(f"DEBUG MOVS: {historial_movimientos}") #DEBUG
+
+    return matriz, vacio_fila, vacio_colu, historial_movimientos
 
 def mostrar_juego(matriz,historial_movimeintos):
     for i in range(4):
         print()
-
-    print(f"=== Fifteen ===")      
+    
+    espaciado = len(matriz[0]) #- len(" Fifteen ")
+    print("=" * espaciado  + " Fifteen " +  "=" * espaciado)      
 
     for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
-        print(matriz[i])
+        print(str(matriz[i]).ljust(20))
 
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
     print("Cantidad de movimientos: " + str(len(historial_movimeintos)))
 
 def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimientos): #Movimientos es una lista
-    movs_procesados = 0
     for movimiento in movimientos:
-        
         while es_movimiento_valido(movimiento, vacio_fila, vacio_colu) == False:
-            #mostrar_juego(matriz, historial_movimientos)
-            #if len(movimientos) > 1:
-
-            print(" " * (len("Entrada:") + movs_procesados) +  "^")
-            movimiento = input(f"{movimiento} es un movimiento invalido : ")
-
+            movimiento = input(f"{movimiento} es invalido: ")
 
         if movimiento == MOV_ABAJO:  
             matriz[vacio_fila][vacio_colu],matriz[vacio_fila - 1][vacio_colu] = matriz[vacio_fila - 1][vacio_colu],matriz[vacio_fila][vacio_colu]
@@ -107,18 +99,15 @@ def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimient
             vacio_colu = vacio_colu + 1
         historial_movimientos.append(movimiento) 
         
-        movs_procesados += 1
-        movimientos = movimientos[1:] #Apenas un movimiento es procesado quiero sacarlo de la "lista" de movimientos
+       # movimientos = movimientos[1:] #Apenas un movimiento es procesado quiero sacarlo de la "lista" de movimientos
 
-    return movimientos, vacio_fila, vacio_colu ,matriz, historial_movimientos
+    return vacio_fila, vacio_colu ,matriz, historial_movimientos
+        #TODO: SAQUE RETURN MOVIMIENTOS
 
 def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     '''
     Funcion que dada un movimiento y una matriz, devuelve un booleano que determina si el movimiento es valido o invalido
     '''
-
-    #print(f"DEBUG CHEQUEAR MOVIMIENTO {mov_a_chequear}")
-
     if mov_a_chequear not in CONTROLES:
         return False
     
