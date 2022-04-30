@@ -23,8 +23,7 @@ ESPACIO_VACIO = " "
 # Funciones
 def generar_matriz(filas, columnas):
     '''
-    Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales NUMERO_FILA & NUMERO_COLU
-    Ejemplo de como se deberia ver una matriz 3x3
+    Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales NUMERO_FILA & NUMERO_COLU. Ejemplo de como se deberia ver una matriz 3x3:
     [
     [a,b,c],
     [d,e,f],
@@ -83,7 +82,7 @@ def mostrar_juego(matriz,historial_movimeintos):
 
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
-    print("Cantidad de movimientos: " + str(len(historial_movimeintos)))
+    print("Cantidad de movimientos: " + str(len(historial_movimeintos) - CUANTO_MEZCLAR) + "/" + str(CUANTO_MEZCLAR * 5))
     print()
 
 def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimientos): #Movimientos es una lista
