@@ -3,11 +3,11 @@ from random import choice, randint
 
 # Constantes globales 
 ## Constantes globales relacionada a la matriz
-NUMERO_COLU  = 21
-NUMERO_FILA  = 10
+NUMERO_COLU  = 4
+NUMERO_FILA  = 4
 ULTIMA_COLU  = NUMERO_COLU - 1
 ULTIMA_FILA  = NUMERO_FILA - 1
-CUANTO_MEZCLAR  = 10#randint(25,50)
+CUANTO_MEZCLAR  = randint(25,35)
 
 ## Constantes relacionadas a los controles
 CONTROLES    = ("w","s","a","d") #1ero: Arriba; 2do:Abajo; 3ro: Izquierda; 4to: Derecha
@@ -64,6 +64,7 @@ def generar_tablero(filas, columnas, cuanto_mezclar):
     return matriz, vacio_fila, vacio_colu, historial_movimientos
 
 def mostrar_juego(matriz,historial_movimeintos):
+    print()
     for i in range(4):
         print()
     
@@ -76,12 +77,13 @@ def mostrar_juego(matriz,historial_movimeintos):
                 ending = "\n"
             else:
                 ending = " | "
-            print(str(matriz[i][j]).center(len(str((NUMERO_FILA * NUMERO_COLU) - 1))), end=ending) #len(str((NUMERO_FILA * NUMERO_COLU) - 1)) Esta funcion calcula la longitud del digito que el espacio reemplaza. Esto asegura que el tablero va a estar ordenado, sin importar el numero de filas y columnas (ignorando el monitor)
+            print(str(matriz[i][j]).center(len(str((NUMERO_FILA * NUMERO_COLU) - 1))), end=ending) #len(str((NUMERO_FILA * NUMERO_COLU) - 1)) Esta funcion calcula la longitud del digito mas grande. Esto deberia asegurar que el tablero va a estar ordenado y prolijo, sin importar el numero de filas y columnas (ignorando el monitor)
     
 
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
     print("Cantidad de movimientos: " + str(len(historial_movimeintos)))
+    print()
 
 def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimientos): #Movimientos es una lista
     for movimiento in movimientos:

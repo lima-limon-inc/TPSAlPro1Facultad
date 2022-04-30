@@ -18,11 +18,21 @@ def main():
     vacio_colu = estado_del_juego[2]
     historial_movimientos = estado_del_juego[3]
     movimientos_jugador = ""
+    matriz_resuelta = generar_matriz(NUMERO_FILA, NUMERO_COLU)[0]
 
     while True: 
         mostrar_juego(matriz,historial_movimientos)
-        #print(f"DEBUG MOVIMIENTOS INPUT: {movimientos_jugador}")
         movimientos_jugador = (input("Entrada:"))
         vacio_fila, vacio_colu, matriz, historial_movimientos = mover_vacio(movimientos_jugador, vacio_fila, vacio_colu, matriz, historial_movimientos)
+        
+        if matriz == matriz_resuelta:
+            mostrar_juego(matriz, historial_movimientos)
+            print("Ganaste! :)")
+            break
+        
+        elif len(historial_movimientos) - CUANTO_MEZCLAR > CUANTO_MEZCLAR * 5:
+            mostrar_juego(matriz, historial_movimientos)
+            print("Perdiste! :(")
+            break
 
 main()
