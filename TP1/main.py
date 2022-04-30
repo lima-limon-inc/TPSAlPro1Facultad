@@ -29,9 +29,13 @@ def main():
             print("Ganaste! :)")
             break
         
-        elif len(historial_movimientos) - CUANTO_MEZCLAR > CUANTO_MEZCLAR * 5:
+        elif len(historial_movimientos) - CUANTO_MEZCLAR > 5:
             mostrar_juego(matriz, historial_movimientos)
-            print("Perdiste! :(" + )
+            print("Perdiste! :(")
+            print()
+            print(frase_motivadora())
+            print()
+            print("$ python3 main.py para intentarlo de nuevo")
             break
 
 main()
