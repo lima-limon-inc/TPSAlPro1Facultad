@@ -3,8 +3,8 @@ from random import choice, randint
 
 # Constantes globales 
 ## Constantes globales relacionada a la matriz
-NUMERO_COLU  = 3
-NUMERO_FILA  = 3 
+NUMERO_COLU  = 4
+NUMERO_FILA  = 4 
 ULTIMA_COLU  = NUMERO_COLU - 1
 ULTIMA_FILA  = NUMERO_FILA - 1
 CUANTO_MEZCLAR  = 10#randint(25,50)
@@ -17,7 +17,7 @@ MOV_IZQUIERDA= CONTROLES[2]
 MOV_DERECHA  = CONTROLES[3]
 SALIR_JUEGO  = "o"
 
-ESPACIO_VACIO = "M"
+ESPACIO_VACIO = " "
 
 # Funciones
 def generar_matriz(filas, columnas):
@@ -71,7 +71,12 @@ def mostrar_juego(matriz,historial_movimeintos):
     print("=" * espaciado  + " Fifteen " +  "=" * espaciado)      
 
     for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
-        print(str(matriz[i]).ljust(20))
+        for j in range(len(matriz[i])):
+            if j == len(matriz[i]) - 1:
+                print(str(matriz[i][j]).center(2), end="\n")
+            else:
+                print(str(matriz[i][j]).center(2), end=" | ")
+        #print(str(matriz[i]).center(20))
 
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
@@ -98,11 +103,8 @@ def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimient
             matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu + 1] = matriz[vacio_fila][vacio_colu + 1],matriz[vacio_fila][vacio_colu]
             vacio_colu = vacio_colu + 1
         historial_movimientos.append(movimiento) 
-        
-       # movimientos = movimientos[1:] #Apenas un movimiento es procesado quiero sacarlo de la "lista" de movimientos
 
     return vacio_fila, vacio_colu ,matriz, historial_movimientos
-        #TODO: SAQUE RETURN MOVIMIENTOS
 
 def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     '''
