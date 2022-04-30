@@ -3,8 +3,8 @@ from random import choice, randint
 
 # Constantes globales 
 ## Constantes globales relacionada a la matriz
-NUMERO_COLU  = 4
-NUMERO_FILA  = 4 
+NUMERO_COLU  = 21
+NUMERO_FILA  = 10
 ULTIMA_COLU  = NUMERO_COLU - 1
 ULTIMA_FILA  = NUMERO_FILA - 1
 CUANTO_MEZCLAR  = 10#randint(25,50)
@@ -73,10 +73,11 @@ def mostrar_juego(matriz,historial_movimeintos):
     for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
         for j in range(len(matriz[i])):
             if j == len(matriz[i]) - 1:
-                print(str(matriz[i][j]).center(2), end="\n")
+                ending = "\n"
             else:
-                print(str(matriz[i][j]).center(2), end=" | ")
-        #print(str(matriz[i]).center(20))
+                ending = " | "
+            print(str(matriz[i][j]).center(len(str((NUMERO_FILA * NUMERO_COLU) - 1))), end=ending) #len(str((NUMERO_FILA * NUMERO_COLU) - 1)) Esta funcion calcula la longitud del digito que el espacio reemplaza. Esto asegura que el tablero va a estar ordenado, sin importar el numero de filas y columnas (ignorando el monitor)
+    
 
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
