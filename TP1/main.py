@@ -11,17 +11,18 @@ def main():
     3er elemento: CANTIDAD de movimientos del jugador. Tipo: Integer
     4to elemento: Movimientos del jugador. Tipo: String
     '''
-    estado_del_juego = [generar_matriz(),[ULTIMA_FILA, ULTIMA_COLU], [], ""] 
+    estado_del_juego = generador_de_movs()
 
     matriz = estado_del_juego[0]
-    coord_vacio = estado_del_juego[1]
-    historial_movimientos = estado_del_juego[2]
-    movimientos_jugador = estado_del_juego[3]
+    vacio_fila = estado_del_juego[1]
+    vacio_colu = estado_del_juego[2]
+    historial_movimientos = estado_del_juego[3]
+    movimientos_jugador = estado_del_juego[4]
 
     while True: 
         mostrar_juego(matriz,historial_movimientos)
         print(f"DEBUG MOVIMIENTOS INPUT: {movimientos_jugador}")
         movimientos_jugador += (input("Entrada:"))
-        movimientos_jugador, coord_vacio, matriz, historial_movimientos = mover_vacio(movimientos_jugador, coord_vacio, matriz, historial_movimientos)
+        movimientos_jugador, vacio_fila, vacio_colu, matriz, historial_movimientos = mover_vacio(movimientos_jugador, vacio_fila, vacio_colu, matriz, historial_movimientos)
 
 main()
