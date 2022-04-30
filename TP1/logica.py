@@ -7,7 +7,7 @@ NUMERO_COLU  = 4
 NUMERO_FILA  = 4
 ULTIMA_COLU  = NUMERO_COLU - 1
 ULTIMA_FILA  = NUMERO_FILA - 1
-CUANTO_MEZCLAR  = randint(25,35)
+CUANTO_MEZCLAR  = NUMERO_FILA * NUMERO_COLU * 2
 
 ## Constantes relacionadas a los controles
 CONTROLES    = ("w","s","a","d") #1ero: Arriba; 2do:Abajo; 3ro: Izquierda; 4to: Derecha
@@ -23,12 +23,14 @@ ESPACIO_VACIO = " "
 # Funciones
 def generar_matriz(filas, columnas):
     '''
-    Funcion que genera una matriz de NxM dimensiones, dependiendo de las constantes globales NUMERO_FILA & NUMERO_COLU. Ejemplo de como se deberia ver una matriz 3x3:
-    [
-    [a,b,c],
-    [d,e,f],
-    [g,h,i]
-    ]
+    Funcion que genera una matriz con todos los numeros hasta el NUMERO_COLU * NUMERO_FILA (excepto en la ultima, donde esta el ESPACIO_VACIO)
+    Recibe:
+        0. filas -> int. Cantidad de filas que se quiere que tenga el tablero.
+        1. columnas -> int. Cantidad de columnas que se quiere que tenga el tablero.
+    Devuelve: 
+        0. matriz -> list. Matriz de filas X columnas 
+        1. vacio_fila -> int. Representa la fila donde el espacio vacio esta
+        2. vacio_colu -> int. Representa la columnda donde el espacio vacio esta 
     '''
     matriz = [] 
     valor_celda = 1
@@ -39,14 +41,25 @@ def generar_matriz(filas, columnas):
             matriz[fila].append(valor_celda)
             valor_celda += 1
 
-    matriz[-1][-1] = ESPACIO_VACIO
+    matriz[-1][-1] = ESPACIO_VACIO #Siempre quiero que el espacio blanco sea el ultimo
     vacio_fila = ULTIMA_FILA
     vacio_colu = ULTIMA_COLU
 
     return matriz, vacio_fila, vacio_colu
 
 def generar_tablero(filas, columnas, cuanto_mezclar):
-    
+    '''
+    Funcion que, dada una matriz con el espacio en blanco, mezcla todos los elementos una cantidad "cuanto_mezclar" de veces. 
+    Recibe:
+        0. filas -> int. Cantidad de filas que se quiere que tenga el tablero.
+        1. columnas -> int. Cantidad de columnas que se quiere que tenga el tablero.
+        2. cuanto_mezclar -> int. Cantidad de veces que se quiere que se mueva el espacio en blanco para mezclar el tablero
+    Devuelve:
+        0. matriz -> list. Matriz de filas X columnas 
+        1. vacio_fila -> int. Representa la fila donde el espacio vacio esta
+        2. vacio_colu -> int. Representa la columnda donde el espacio vacio esta 
+        3. historial_movimientos -> list. Lista donde se almacenan todos los movimientos realizados (incluyendo los que se hacen al principio para aleatorizar el tablero)
+    '''
     matriz, vacio_fila, vacio_colu = generar_matriz(filas,columnas)
 
     historial_movimientos = []
@@ -54,45 +67,64 @@ def generar_tablero(filas, columnas, cuanto_mezclar):
     for i in range(cuanto_mezclar):
         jugada_a_realizar = choice(CONTROLES)
 
-        while es_movimiento_valido(jugada_a_realizar,vacio_fila, vacio_colu) == False:
+        while es_movimiento_valido(jugada_a_realizar,vacio_fila, vacio_colu) == False: #No va a salir de este while loop  hasta que un movimiento valido sea aleatoriamente elegido
             jugada_a_realizar = choice(CONTROLES)
 
-        vacio_fila, vacio_colu, matriz, historial_movimientos =  mover_vacio(jugada_a_realizar, vacio_fila, vacio_colu, matriz, historial_movimientos)
-
-    print(f"DEBUG MOVS: {historial_movimientos}") #DEBUG
+        matriz,vacio_fila, vacio_colu,  historial_movimientos =  mover_vacio(jugada_a_realizar, matriz, vacio_fila, vacio_colu, historial_movimientos) # Apenas se genere un movimiento valido, se realiza y se guarda
 
     return matriz, vacio_fila, vacio_colu, historial_movimientos
 
 def mostrar_juego(matriz,historial_movimeintos):
-    print()
-    for i in range(4):
+    '''
+    Funcion que muestra el estado del juego (el tablero, cantidad de movimientos realizados y maxima cantidad de movimientos, nombre del juego 
+    Recibe:
+        0. matriz -> list. Matriz de filas X columnas 
+        1. historial_movimientos -> list. Lista donde se almacenan todos los movimientos realizados (incluyendo los que se hacen al principio para aleatorizar el tablero)
+    Devuelve:
+        0. None
+        Es una funcion impura, no devuelve "nada", solo tiene efectos secundarios.
+    '''
+    for i in range(4): #Crea un espacio inicial para separarlo de la linea anterior
         print()
     
-    espaciado = len(matriz[0]) #- len(" Fifteen ")
+    espaciado = len(str(matriz[0])) - len(" Fifteen ") # Int que representa la cantidad de "=" que tiene que haber despues y antes del titulo "Fifteen"
     print("=" * espaciado  + " Fifteen " +  "=" * espaciado)      
 
-    for i in range(len(matriz)): #TODO: hacer que esto quede mas lindo
+    for i in range(len(matriz)): #Funcion que le da formato con " | " y el espaciado
         for j in range(len(matriz[i])):
             if j == len(matriz[i]) - 1:
                 ending = "\n"
             else:
                 ending = " | "
-            print(str(matriz[i][j]).center(len(str((NUMERO_FILA * NUMERO_COLU) - 1))), end=ending) #len(str((NUMERO_FILA * NUMERO_COLU) - 1)) Esta funcion calcula la longitud del digito mas grande. Esto deberia asegurar que el tablero va a estar ordenado y prolijo, sin importar el numero de filas y columnas (ignorando el monitor)
+            print(str(matriz[i][j]).center(len(str((NUMERO_FILA * NUMERO_COLU) - 1))), end=ending) # 'len(str((NUMERO_FILA * NUMERO_COLU) - 1))' Esta funcion calcula la longitud del digito mas grande. Esto deberia asegurar que el tablero va a estar ordenado y prolijo, sin importar el numero de filas y columnas (ignorando el monitor)
     
 
     print(f"Controles Arriba:{MOV_ARRIBA}, Abajo:{MOV_ABAJO}, Izquierda:{MOV_IZQUIERDA}, Derecha:{MOV_DERECHA}")
     print(f"Salir del juego: {SALIR_JUEGO} ")
     print("Cantidad de movimientos: " + str(len(historial_movimeintos) - CUANTO_MEZCLAR) + "/" + str(CUANTO_MEZCLAR * 5))
-    print()
 
-def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimientos): #Movimientos es una lista
+def mover_vacio(movimientos, matriz, vacio_fila, vacio_colu, historial_movimientos): #Movimientos es una lista
+    '''
+    Funcion que se encarga de mover el espacio en blanco. Todos los movimientos son anadidos a historial_movimientos
+    Recibe:
+        0. movimientos -> str. Cadena con todos los movimientos del usuario (del estilo: "adwddwc")
+        1. matriz -> list. Matriz de filas X columnas 
+        2. vacio_fila -> int. Representa la fila donde el espacio vacio esta
+        3. vacio_colu -> int. Representa la columnda donde el espacio vacio esta 
+        4. historial_movimientos -> list. Lista donde se almacenan todos los movimientos realizados (incluyendo los que se hacen al principio para aleatorizar el tablero)
+    Devuelve:
+        0. matriz -> list. Matriz de filas X columnas 
+        1. vacio_fila -> int. Representa la fila donde el espacio vacio esta
+        2. vacio_colu -> int. Representa la columnda donde el espacio vacio esta 
+        3. historial_movimientos -> list. Lista donde se almacenan todos los movimientos realizados (incluyendo los que se hacen al principio para aleatorizar el tablero)
+    '''
     movs_procesados = 0
     for movimiento in movimientos:
         while es_movimiento_valido(movimiento, vacio_fila, vacio_colu) == False:
             mostrar_juego(matriz, historial_movimientos)
             print(f"Tu entrada:{movimientos}")
             print(" " * (len("Tu entrada:") + movs_procesados) +  "^")
-            movimiento = input(f"{movimiento} es invalido: ")
+            movimiento = input(f"{movimiento} es invalido. Corregir: ")
 
         if movimiento == MOV_ABAJO:  
             matriz[vacio_fila][vacio_colu],matriz[vacio_fila - 1][vacio_colu] = matriz[vacio_fila - 1][vacio_colu],matriz[vacio_fila][vacio_colu]
@@ -109,14 +141,21 @@ def mover_vacio(movimientos, vacio_fila, vacio_colu, matriz, historial_movimient
         if movimiento == MOV_IZQUIERDA :#Ejecuta lo de abajo si y solo si el espacio vacio no esta en la ultima columna
             matriz[vacio_fila][vacio_colu],matriz[vacio_fila][vacio_colu + 1] = matriz[vacio_fila][vacio_colu + 1],matriz[vacio_fila][vacio_colu]
             vacio_colu = vacio_colu + 1
+
         movs_procesados += 1
         historial_movimientos.append(movimiento) 
 
-    return vacio_fila, vacio_colu ,matriz, historial_movimientos
+    return matriz, vacio_fila, vacio_colu, historial_movimientos
 
 def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
     '''
     Funcion que dada un movimiento y una matriz, devuelve un booleano que determina si el movimiento es valido o invalido
+    Recibe:
+        0. mov_a_chequear -> str
+        1. vacio_fila -> int. Representa la fila donde el espacio vacio esta
+        2. vacio_colu -> int. Representa la columnda donde el espacio vacio esta 
+    Devuelve:
+        0. True/False -> bool. Dependiendo de si el movimiento es valido o no
     '''
     if mov_a_chequear not in CONTROLES:
         return False
@@ -137,6 +176,15 @@ def es_movimiento_valido(mov_a_chequear, vacio_fila, vacio_colu):
         return True
 
 def frase_motivadora():
+    '''
+    Funcion que contiene una lista con una serie de frases para motivar al usuario en caso de que pierda
+    Recibe:
+        0.Nada
+    Devuelve:
+        0.choice(lista_frases) -> str. Frase aleatoria dentro de la lista
+    '''
     lista_frases = ["'Nada está perdido si se tiene el valor de proclamar que todo está perdido y hay que empezar de nuevo'.-Julio Cortázar", "'Llegará un momento en que creas que todo ha terminado. Ese será el principio.' -Epicuro","'El fracaso es la oportunidad de comenzar de nuevo con más inteligencia'.-Henry Ford"]
 
     return choice(lista_frases)
+
+# PD: Sin contar la documentacion, son 135 lineas de codigo
