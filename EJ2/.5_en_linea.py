@@ -1,19 +1,17 @@
-# IMPORTS
+# Imports
 import gamelib
 
 # Constantes
 ## Constantes globales relacionadas con la ventana
 ANCHO_VENTANA = 300
 ALTO_VENTANA = 300
-ESPACIO_MENSAJE = 50
 
 ## Constantes relacionadas con el tablero
 FILAS = 10
 COLUMNAS = 10
 CUADRADO_ANCHO = ANCHO_VENTANA * 0.1
 CUADRADO_ALTO = ALTO_VENTANA * 0.1
-JUGADOR1 = "X"
-JUGADOR2 = "O"
+
 
 def juego_crear():
     '''Funcion que se ejecuta al iniciar el juegop. Esta devuelve dos cosas un string indicando el turno de quien es y una matriz que contiene el estado de todas las casillas del juego, cada casilla puede tener 1 de 3 valores: 1) "X": significa que el jugador "X" selecciono la casilla. 2) "O": Significa que el jugador "O" selecciono la casilla. 3) "": Significa que la casilla no fue seleccionada
@@ -29,7 +27,7 @@ def juego_crear():
         for columna in range(COLUMNAS):
             juego[fila].append("")
     
-    quien_juega = JUGADOR1
+    quien_juega = "X"
     return juego, quien_juega
 
 def juego_actualizar(juego, x, y,quien_juega):
@@ -44,11 +42,9 @@ def juego_actualizar(juego, x, y,quien_juega):
         0. juego -> list. Matriz de filas
         1. quien_juega -> str. String que representa a que jugador le toca jugar (ejemplo: "X" indica que es el turno del jugador "X")
     '''
-    if x > ANCHO_VENTANA or y > ALTO_VENTANA: #Si el usuario hizo click en un lugar fuera de la zona de juego, no generar cambios en el estado del juego
-        return juego, quien_juega 
 
-    for columna in range(COLUMNAS): #Funcion que transforma las coordenadas x e y del mouse en coordenadas de la lista. Ejemplo:  (x: 113, y:237) --> (x: 3, y:7)
-        if not (columna * CUADRADO_ANCHO <= x <= columna * CUADRADO_ANCHO + CUADRADO_ANCHO): 
+    for columna in range(COLUMNAS):
+        if not (columna * CUADRADO_ANCHO <= x <= columna * CUADRADO_ANCHO + CUADRADO_ANCHO):
             continue
         x = columna
         for fila in range(FILAS):
@@ -56,33 +52,24 @@ def juego_actualizar(juego, x, y,quien_juega):
                 continue
             y = fila
 
-    if juego[y][x] == "": #Solo queremos cambiar el estado de las coordenadas vacias. Entonces si la casilla ya tiene algo adentro ("X" o "O"), no la modificamos
-        juego[y][x] = quien_juega #Si esta vacia, le cambiamos el estado al logo del jugador que hizo click
-        quien_juega = (JUGADOR2 if quien_juega == JUGADOR1  else JUGADOR1) #Y despues cambiamos al otro jugador. WARNING: Esto solo funciona porque son dos jugadores; una implementacion mas abarcativa seria mejor
+    if juego[y][x] == "":
+        juego[y][x] = quien_juega
+        quien_juega = ("O" if quien_juega == "X" else "X")
 
     return juego, quien_juega
 
 def juego_mostrar(juego, quien_juega):
-    '''
-    Funcion que se encarga de manejar el UI del juego. Consiste en dos funciones que se encargan de dibujar cada uno de los casilleros y ademas de rellarlos en el caso que uno de los usuarios lo haya seleccionado. 
-    Recibe:
-        0. juego -> list. Matriz de filas
-        1. quien_juega -> str. String que representa a que jugador le toca jugar (ejemplo: "X" indica que es el turno del jugador "X")
-    Devuelve:
-	Nada, funcion impura. Solo tiene efectos secundarios.	
-    '''
+    '''Funcion que se encarga de mostrar la interfaz grafica del juego. '''
     for fila in range(FILAS):
         for columna in range(COLUMNAS):
             gamelib.draw_rectangle(CUADRADO_ANCHO * columna, CUADRADO_ALTO * fila, CUADRADO_ANCHO * columna + CUADRADO_ANCHO, fila * CUADRADO_ALTO + CUADRADO_ALTO)
-            gamelib.draw_text(juego[fila][columna], CUADRADO_ANCHO * columna + CUADRADO_ANCHO/2, CUADRADO_ALTO * fila + CUADRADO_ALTO/2, fill='black', anchor='c') #CUADRADO_ANCHO/2 & CUADRADO_ALTO/2 se suman para que quede en el centor del casillero.
-    
-    gamelib.draw_text(f'Es el turno de {quien_juega}',ANCHO_VENTANA/2,ALTO_VENTANA + ESPACIO_MENSAJE/2)
-    
+            gamelib.draw_text(juego[fila][columna], CUADRADO_ANCHO * columna + CUADRADO_ANCHO/2, CUADRADO_ALTO * fila + CUADRADO_ALTO/2, fill='black', anchor='c')
+
 def main():
     juego, quien_juega = juego_crear()
 
     # Ajustar el tamaño de la ventana
-    gamelib.resize(ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE)
+    gamelib.resize(ANCHO_VENTANA, ALTO_VENTANA)
 
     # Mientras la ventana esté abierta:
     while gamelib.is_alive():
