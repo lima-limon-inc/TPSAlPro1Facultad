@@ -9,6 +9,7 @@ ULTIMA_COLUMNA = COLUMNAS - 1
 
 # Constantes relacionadas con los movimientos
 MOVIMIENTOS = leer_movimientos("movimientos.csv")
+print(MOVIMIENTOS)
 
 class Tablero:
     def __init__(self):
