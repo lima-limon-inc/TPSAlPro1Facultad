@@ -9,7 +9,6 @@ ULTIMA_COLUMNA = COLUMNAS - 1
 
 # Constantes relacionadas con los movimientos
 MOVIMIENTOS = leer_movimientos("movimientos.csv")
-print(MOVIMIENTOS)
 
 class Tablero:
     def __init__(self):
@@ -34,6 +33,7 @@ class Pieza:
         self.tipo = tipo
         self.seleccionado = seleccionado #Booleano
         self.imagen = self.cambiar_imagen(seleccionado)
+        self.movimientos_validos = set() 
 
     def __str__(self):
         return f"{self.tipo}"
@@ -44,9 +44,33 @@ class Pieza:
         else:
             return str(self) + "_blanco.gif"
 
-    def calcular_movimientos_validos(self, posicion, casillas): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
+    def calcular_movimientos_validos(self, posicion): #, casillas, movimientoJugador): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
         columna = posicion[0]
         fila = posicion[1]
+        for movimiento in MOVIMIENTOS[str(self)]['movimientos']:
+            posibleColumna = columna + movimiento[0]
+            posibleFila = fila + movimiento[1]
 
-print(Pieza("torre",False).imagen)
-print(Pieza("alfil",True).imagen)
+            if (posibleColumna > 7 or posibleColumna < 0) or (posibleFila > 7 or posibleFila < 0):
+                continue
+
+            posibleMovimiento = (posibleColumna, posibleFila)
+            
+            self.movimientos_validos.add(posibleMovimiento)
+
+           #if movimientoJugador == True and posibleMovimiento in casillas:
+           #    self.movimientos_validos.add(posibleMovimiento) #Si el jugador es el que tiene que hacer el movimiento, entonces SOLO guardamos los movimientos donde haya una ficha para comer
+
+c = Pieza("caballo", False)
+c.calcular_movimientos_validos((7,7))
+print(c.movimientos_validos)
+
+
+
+
+
+
+            
+
+#print(Pieza("torre",False).imagen)
+#print(Pieza("alfil",True).imagen)
