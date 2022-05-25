@@ -11,6 +11,19 @@ ULTIMA_COLUMNA = COLUMNAS - 1
 # Constantes relacionadas con los movimientos
 MOVIMIENTOS = leer_movimientos("movimientos.csv")
 
+# Constantes relacionadas con las piezas
+PIEZA_ANCHO = 44
+PIEZA_LARGO = 44
+
+# Constantes relacionadas con la ventana
+ANCHO_VENTANA = PIEZA_ANCHO * COLUMNAS
+ALTO_VENTANA = PIEZA_LARGO * FILAS
+COLOR_BLANCO = "#2d2d3f"
+COLOR_NEGRO  = "#181818"
+
+
+ESPACIO_MENSAJE = 50
+
 class Tablero:
     def __init__(self):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
@@ -89,14 +102,14 @@ class Pieza:
 
 
 
-t = Tablero()
-t.generar_tablero()
+#t = Tablero()
+#t.generar_tablero()
 
-for posicion, pieza in t.tablero_mutable.items():
-    print(posicion, pieza)
-columnaMover = int(input())
-filaMover = int(input())
+#for posicion, pieza in t.tablero_mutable.items():
+#    print(posicion, pieza)
+#columnaMover = int(input())
+#filaMover = int(input())
 
-t.actualizar_tablero(columnaMover, filaMover)
-for posicion, pieza in t.tablero_mutable.items():
-    print(posicion, pieza)
+#t.actualizar_tablero(columnaMover, filaMover)
+#for posicion, pieza in t.tablero_mutable.items():
+#    print(posicion, pieza)
