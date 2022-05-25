@@ -1,21 +1,15 @@
+# Imports
+from procesar_archivos import leer_movimientos
+
 # Constantes relacionadas con el tablero:
 FILAS = 8
 COLUMNAS = 8
 ULTIMA_FILA = FILAS - 1
 ULTIMA_COLUMNA = COLUMNAS - 1
 
-def leer_movimientos(archivo):
-    diccionario_movimientos = {}
-    with open(archivo, "r") as f:
-        for linea in f:
-            pieza, dir_x_dir_y, extensible = linea.rstrip("\n").split(",")
-            diccionario_movimientos[pieza] = diccionario_movimientos.get(pieza, {"extensible":extensible, "movimientos":[]}) #"Sobreescribe" el valor si ya existe consigo mismo, caso contrario crea una lista vacia como valor
-
-            diccionario_movimientos[pieza]["movimientos"].append((dir_x_dir_y.split(";")))
-
-    return diccionario_movimientos
-
-print(leer_movimientos("movimientos.csv"))
+# Constantes relacionadas con los movimientos
+MOVIMIENTOS = leer_movimientos("movimientos.csv")
+print(MOVIMIENTOS)
 
 class Tablero:
     def __init__(self):
@@ -35,9 +29,25 @@ class Tablero:
     def casillas_ocupadas(self):
         return self.tablero_mutable.keys()
 
-class Caballo:
-    pass
-class Alfil:
-    pass
-class Torre:
-    pass
+class Pieza:
+    def __init__(self, tipo, seleccionado):
+        self.tipo = tipo
+        self.seleccionado = seleccionado #Booleano
+        self.imagen = self.cambiar_imagen(seleccionado)
+
+    def __str__(self):
+        return f"{self.tipo}"
+
+    def cambiar_imagen(self, seleccionado):
+        if seleccionado:
+            self.imagen = str(self) + "_rojo.gif"
+        else:
+            self.imagen = str(self) + "_blanco.gif"
+
+    def calcular_movimientos_validos(self, posicion, casillas): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
+        columna = posicion[0]
+        fila = posicion[1]
+
+        
+
+
