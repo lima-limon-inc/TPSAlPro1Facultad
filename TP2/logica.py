@@ -40,14 +40,13 @@ class Pieza:
 
     def cambiar_imagen(self, seleccionado):
         if seleccionado:
-            self.imagen = str(self) + "_rojo.gif"
+            return str(self) + "_rojo.gif"
         else:
-            self.imagen = str(self) + "_blanco.gif"
+            return str(self) + "_blanco.gif"
 
     def calcular_movimientos_validos(self, posicion, casillas): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
         columna = posicion[0]
         fila = posicion[1]
 
-        
-
-
+print(Pieza("torre",False).imagen)
+print(Pieza("alfil",True).imagen)
