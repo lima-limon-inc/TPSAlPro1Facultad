@@ -1,5 +1,6 @@
 # Imports
 from procesar_archivos import leer_movimientos
+from random import choice, randint
 
 # Constantes relacionadas con el tablero:
 FILAS = 8
@@ -9,12 +10,12 @@ ULTIMA_COLUMNA = COLUMNAS - 1
 
 # Constantes relacionadas con los movimientos
 MOVIMIENTOS = leer_movimientos("movimientos.csv")
-print(MOVIMIENTOS)
 
 class Tablero:
     def __init__(self):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
         self.tablero_mutable = {}
+        self.nivel = 2
 
     def actualizar_tablero(self, columna, fila, pieza):
         if columna > ULTIMA_COLUMNA or columna < 0:
@@ -24,17 +25,33 @@ class Tablero:
 
         self.tablero_mutable[(columna, fila)] = pieza
         
-        return self.tablero_mutable
+        #return self.tablero_mutable
 
     def casillas_ocupadas(self):
         return self.tablero_mutable.keys()
+
+    def generar_tablero(self):
+        columna = randint(0,7)
+        fila = randint(0,7)
+        print(f"DEBUG Aleatorio: {columna} {fila}")
+        for i in range(self.nivel + 2):
+            self.tablero[columna, fila] = Pieza(choice(list(MOVIMIENTOS.keys())), False) #MOVIMIENTOS.keys() son todos los tipos de piezas
+            columna, fila = choice(list(self.tablero[columna, fila].calcular_movimientos_validos(columna, fila)))
+       #    print(columna)
+       #    print(fila)
+       #
+       #print(self.tablero)
+
+            
+
+
 
 class Pieza:
     def __init__(self, tipo, seleccionado):
         self.tipo = tipo
         self.seleccionado = seleccionado #Booleano
         self.imagen = self.cambiar_imagen(seleccionado)
-        self.movimientos_validos = set() 
+        self.movimientos_validos = set()  #TODO: Posiblemente borrar
 
     def __str__(self):
         return f"{self.tipo}"
@@ -45,10 +62,9 @@ class Pieza:
         else:
             return str(self) + "_blanco.gif"
 
-    def calcular_movimientos_validos(self, posicion): #, casillas, movimientoJugador): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
-        columna = posicion[0]
-        fila = posicion[1]
-        for movimiento in MOVIMIENTOS[str(self)]['movimientos']:
+    def calcular_movimientos_validos(self, columna, fila): #, casillas, movimientoJugador): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
+        movimientos_validos = set()
+        for movimiento in MOVIMIENTOS[str(self)]:
             posibleColumna = columna + movimiento[0]
             posibleFila = fila + movimiento[1]
 
@@ -56,22 +72,22 @@ class Pieza:
                 continue
 
             posibleMovimiento = (posibleColumna, posibleFila)
+
+            movimientos_validos.add(posibleMovimiento)
             
-            self.movimientos_validos.add(posibleMovimiento)
+        
+        print(f"DEBUG MOVIMIENTOS VALIDOS {self}: {movimientos_validos}")
+        return movimientos_validos
 
-           #if movimientoJugador == True and posibleMovimiento in casillas:
-           #    self.movimientos_validos.add(posibleMovimiento) #Si el jugador es el que tiene que hacer el movimiento, entonces SOLO guardamos los movimientos donde haya una ficha para comer
-
-c = Pieza("caballo", False)
-c.calcular_movimientos_validos((7,7))
-print(c.movimientos_validos)
-
+#c = Pieza("alfil", False)
+#c.calcular_movimientos_validos((6,6))
+#print(c.movimientos_validos)
 
 
 
 
+t = Tablero()
+t.generar_tablero()
 
-            
-
-#print(Pieza("torre",False).imagen)
-#print(Pieza("alfil",True).imagen)
+for posicion, pieza in t.tablero.items():
+    print(posicion, pieza)
