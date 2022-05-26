@@ -1,6 +1,10 @@
 import gamelib
 from logica import *
 
+
+t = Tablero()
+print(t.tablero_mutable[(t.pieza_seleccionada[0], t.pieza_seleccionada[1])].movimientos_validos)
+
 def juego_nuevo(movimientos, n_nivel):
     '''inicializa el estado del juego para el numero de nivel dado'''
     return None
@@ -8,18 +12,21 @@ def juego_nuevo(movimientos, n_nivel):
 def juego_mostrar(juego):
     '''dibuja la interfaz de la aplicación en la ventana'''
     for fila in range(FILAS):
-        pintar_blanco = (True if fila % 2 ==0 else False)
+        pintar_blanco = (False if fila % 2 ==0 else True)
 
         for columna in range(COLUMNAS):
-            color = (COLOR_BLANCO if pintar_blanco else COLOR_NEGRO)
-
-            gamelib.draw_rectangle(PIEZA_ANCHO * columna, PIEZA_LARGO * fila, PIEZA_ANCHO * columna + PIEZA_ANCHO, fila * PIEZA_LARGO + PIEZA_LARGO, fill=color, width=4)
-            gamelib.draw_image("sprites/torre_rojo.gif", 0,0)
-
-
-
-
             pintar_blanco = not pintar_blanco
+            color_celda = (COLOR_BLANCO if pintar_blanco else COLOR_NEGRO)
+
+            gamelib.draw_rectangle(PIEZA_ANCHO * columna, PIEZA_LARGO * fila, PIEZA_ANCHO * columna + PIEZA_ANCHO, fila * PIEZA_LARGO + PIEZA_LARGO, fill=color_celda, width=4)
+
+            if (columna, fila) in t.tablero_mutable:
+                color_pieza = ("_rojo.gif" if t.tablero_mutable[(columna,fila)].seleccionado else "_blanco.gif")
+                gamelib.draw_image("sprites/" + str(t.tablero_mutable[(columna,fila)]) + color_pieza, columna * 44, fila * 44)
+
+                if (columna, fila) in t.tablero_mutable[t.pieza_seleccionada].movimientos_validos:
+                    gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
+
     gamelib.draw_end()
 
 def main():

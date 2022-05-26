@@ -28,8 +28,25 @@ class Tablero:
     def __init__(self):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
         self.tablero_mutable = {}
-        self.nivel = 1 #Primer nivel
-        self.pieza_seleccionada = None #Cuando el tablero sea generado, esto va a tomar la forma de una coordenada #TODO: Mover generar_tablero al constructor
+        self.nivel = 16 #Primer nivel
+
+        # El siguiente codigo se encarga de generar el tablero
+
+        # La primera ficha es elegida aleatoriamente
+        columna = randint(0,7)
+        fila = randint(0,7)
+        self.tablero[columna, fila] = Pieza(choice(list(MOVIMIENTOS.keys())), True) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv
+
+        self.pieza_seleccionada = (columna, fila) #Hace referencia a la ficha con la que el jugador empieza
+
+        for i in range(1, self.nivel + 2): #El "1," se debe a que la primera pieza la genero fuera del for loop
+            columna, fila = choice(list(self.tablero[columna, fila].calcular_movimientos_validos(columna, fila, self.casillas_ocupadas())))
+
+            self.tablero[columna, fila] = Pieza(choice(list(MOVIMIENTOS.keys())), False) #MOVIMIENTOS.keys() son todos los tipos de piezas
+
+        self.tablero_mutable = dict(self.tablero) #El tablero mutable es donde el usuario interactua, el tablero no muta (se usa como "failsafe" por si el jugador se queda trabado
+
+
 
     def actualizar_tablero(self, columna_movida, fila_movida):
         """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)""" 
@@ -50,7 +67,7 @@ class Tablero:
         self.tablero[columna, fila] = Pieza(choice(list(MOVIMIENTOS.keys())), True) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv
         self.pieza_seleccionada = (columna, fila)
 
-        print(f"DEBUG Aleatorio: {columna} {fila}")
+        #print(f"DEBUG Aleatorio: {columna} {fila}")
         for i in range(1, self.nivel + 2): #El "1," se debe a que la primera pieza la genero fuera del for loop
             columna, fila = choice(list(self.tablero[columna, fila].calcular_movimientos_validos(columna, fila, self.casillas_ocupadas())))
 
@@ -64,6 +81,7 @@ class Pieza:
         self.seleccionado = seleccionado #Booleano
         self.imagen = self.cambiar_imagen(seleccionado)
         self.movimientos_validos = set()  #TODO: Posiblemente borrar
+        print(f"DEBUG {self.tipo} CREADO. Movimientos {self.movimientos_validos}")
 
     def __str__(self):
         return f"{self.tipo}"
@@ -92,7 +110,7 @@ class Pieza:
             movimientos_validos.add(posibleMovimiento)
             
         
-        print(f"DEBUG MOVIMIENTOS VALIDOS {self}: {movimientos_validos}")
+        self.movimientos_validos = movimientos_validos #TODO: Posiblemente arreglar
         return movimientos_validos
 
 #c = Pieza("alfil", False)
