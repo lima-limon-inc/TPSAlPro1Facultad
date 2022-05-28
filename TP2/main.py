@@ -18,13 +18,13 @@ def juego_mostrar(juego):
             pintar_blanco = not pintar_blanco
             color_celda = (COLOR_BLANCO if pintar_blanco else COLOR_NEGRO)
 
-            gamelib.draw_rectangle(PIEZA_ANCHO * columna, PIEZA_LARGO * fila, PIEZA_ANCHO * columna + PIEZA_ANCHO, fila * PIEZA_LARGO + PIEZA_LARGO, fill=color_celda, width=4)
+            gamelib.draw_rectangle(PIEZA_ANCHO * columna, PIEZA_LARGO * fila, PIEZA_ANCHO * columna + PIEZA_ANCHO, fila * PIEZA_LARGO + PIEZA_LARGO, fill=color_celda, width=4) # Funcion que se encarga de pintar los cuadraditos del tablero de ajedrez
 
-            if (columna, fila) in t.tablero_mutable:
-                color_pieza = ("_rojo.gif" if t.tablero_mutable[(columna,fila)].seleccionado else "_blanco.gif")
-                gamelib.draw_image("sprites/" + str(t.tablero_mutable[(columna,fila)]) + color_pieza, columna * 44, fila * 44)
+            if (columna, fila) in t.tablero_mutable: #Si esto se cumple, significa que hay una pieza en el cuadrado que vamos a pintar
 
-                if (columna, fila) in t.tablero_mutable[t.pieza_seleccionada].movimientos_validos:
+                gamelib.draw_image(t.tablero_mutable[(columna,fila)].devolver_imagen((True if (columna, fila) == t.pieza_seleccionada else False)), columna * 44, fila * 44)
+
+                if (columna, fila) in t.tablero_mutable[t.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
     gamelib.draw_end()

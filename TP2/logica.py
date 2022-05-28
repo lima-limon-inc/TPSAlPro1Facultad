@@ -14,23 +14,25 @@ MOVIMIENTOS = leer_movimientos("movimientos.csv")
 # Constantes relacionadas con las piezas
 PIEZA_ANCHO = 44
 PIEZA_LARGO = 44
+DIRECTORIO_SPRITES = "sprites/"
 
 # Constantes relacionadas con la ventana
+ESPACIO_MENSAJE = 50
 ANCHO_VENTANA = PIEZA_ANCHO * COLUMNAS
 ALTO_VENTANA = PIEZA_LARGO * FILAS
 COLOR_BLANCO = "#2d2d3f"
 COLOR_NEGRO  = "#181818"
 
 
-ESPACIO_MENSAJE = 50
 
 class Tablero:
     def __init__(self):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
         self.tablero_mutable = {}
-        self.nivel = 16 #Primer nivel
+        self.nivel = 1 #Primer nivel
 
         # El siguiente codigo se encarga de generar el tablero
+        #  ----------------------------------------------
 
         # La primera ficha es elegida aleatoriamente
         columna = randint(0,7)
@@ -45,8 +47,6 @@ class Tablero:
             self.tablero[columna, fila] = Pieza(choice(list(MOVIMIENTOS.keys())), False) #MOVIMIENTOS.keys() son todos los tipos de piezas
 
         self.tablero_mutable = dict(self.tablero) #El tablero mutable es donde el usuario interactua, el tablero no muta (se usa como "failsafe" por si el jugador se queda trabado
-
-
 
     def actualizar_tablero(self, columna_movida, fila_movida):
         """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)""" 
@@ -79,18 +79,20 @@ class Pieza:
     def __init__(self, tipo, seleccionado):
         self.tipo = tipo
         self.seleccionado = seleccionado #Booleano
-        self.imagen = self.cambiar_imagen(seleccionado)
+        self.imagen = self.devolver_imagen(self.seleccionado)
         self.movimientos_validos = set()  #TODO: Posiblemente borrar
         print(f"DEBUG {self.tipo} CREADO. Movimientos {self.movimientos_validos}")
 
     def __str__(self):
         return f"{self.tipo}"
 
-    def cambiar_imagen(self, seleccionado):
+    def devolver_imagen(self, seleccionado):
         if seleccionado:
-            return str(self) + "_rojo.gif"
+            color =  "_rojo.gif"
         else:
-            return str(self) + "_blanco.gif"
+            color =  "_blanco.gif"
+
+        return DIRECTORIO_SPRITES + str(self) + color
 
     def calcular_movimientos_validos(self, columna, fila, casillas_ocupadas): #, casillas, movimientoJugador): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
         movimientos_validos = set()
@@ -112,22 +114,3 @@ class Pieza:
         
         self.movimientos_validos = movimientos_validos #TODO: Posiblemente arreglar
         return movimientos_validos
-
-#c = Pieza("alfil", False)
-#c.calcular_movimientos_validos((6,6))
-#print(c.movimientos_validos)
-
-
-
-
-#t = Tablero()
-#t.generar_tablero()
-
-#for posicion, pieza in t.tablero_mutable.items():
-#    print(posicion, pieza)
-#columnaMover = int(input())
-#filaMover = int(input())
-
-#t.actualizar_tablero(columnaMover, filaMover)
-#for posicion, pieza in t.tablero_mutable.items():
-#    print(posicion, pieza)
