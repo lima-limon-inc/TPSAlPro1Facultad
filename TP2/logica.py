@@ -25,30 +25,11 @@ COLOR_NEGRO  = "#181818"
 
 
 
-class Game:
-    def __init__(self, nivel):
-        self.nivel = nivel
-        self.tablero = Tablero(self.nivel)
-
-    def siguienteNivel(self):
-        self.nivel += 1
-        self.tablero = Tablero(self.nivel)
-
-    def procesar_clicks(self, coord_x, coord_y):
-        for columna in range(COLUMNAS): #Funcion que transforma las coordenadas x e y del mouse en coordenadas de la lista. Ejemplo:  (x: 113, y:237) --> (x: 3, y:7)
-            if not (columna * CUADRADO_ANCHO <= x <= columna * CUADRADO_ANCHO + CUADRADO_ANCHO): 
-                continue
-            x = columna
-            for fila in range(FILAS):
-                if not (fila * CUADRADO_ALTO <= y <= fila * CUADRADO_ALTO + CUADRADO_ALTO):
-                    continue
-                y = fila
-
-
 
 class Tablero:
     def __init__(self, nivel):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
+
         # El siguiente codigo se encarga de generar el tablero
         #  ----------------------------------------------
 
@@ -64,7 +45,6 @@ class Tablero:
 
             self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys())), False, self.casillas_ocupadas()) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
 
-
         self.failsafe = (dir(self.tablero), tuple(self.pieza_seleccionada))
 
     def actualizar_tablero(self, columna_destino, fila_destino):
@@ -74,10 +54,15 @@ class Tablero:
         elif fila_destino > ULTIMA_FILA or fila_destino < 0:
             raise IndexError(f"Error, {fila} no es una columna valida, el tablero es de {FILAS} x {COLUMNAS}; y la ultima fila valida es {ULTIMA_FILA}") #Estos dos errores no deberian ocurrir, pero si llegan a ocurrir, se tiene que crashear el programa para evitar un comportamiento no deseado
 
-        if not self.tablero_mutable[columna_destino, fila_destino].seleccionado:
-            self.tablero_mutable[columna_destino, fila_destino].hacer_activa()
+        if (columna_destino, fila_destino) not in self.tablero[self.pieza_seleccionada].movimientos_validos:
+            print("MOVIMIENTO INVALIDO")
+            return None
 
-        self.tablero_mutable.pop(self.pieza_seleccionada)
+
+        if not self.tablero[columna_destino, fila_destino].seleccionado:
+            self.tablero[columna_destino, fila_destino].hacer_activa()
+
+        self.tablero.pop(self.pieza_seleccionada)
 
         self.pieza_seleccionada = (columna_destino, fila_destino)
 
@@ -128,4 +113,3 @@ class Pieza:
             movimientos_validos.add(posibleMovimiento)
 
         return movimientos_validos
-
