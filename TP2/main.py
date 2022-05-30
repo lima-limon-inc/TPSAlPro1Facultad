@@ -48,4 +48,3 @@ def main():
             print(f'se ha presionado la tecla: {ev.key}')
 
 gamelib.init(main)
-
