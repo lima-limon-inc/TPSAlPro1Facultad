@@ -49,13 +49,13 @@ class Tablero:
         self.tablero_mutable = dict(self.tablero) #El tablero mutable es donde el usuario interactua, el tablero no muta (se usa como "failsafe" por si el jugador se queda trabado
 
     def actualizar_tablero(self, columna_movida, fila_movida):
-        """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)""" 
+        """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)"""
         if columna_movida > ULTIMA_COLUMNA or columna_movida < 0:
             raise IndexError(f"Error, {columna} no es una columna valida, el tablero es de {FILAS} x {COLUMNAS}; y la ultima columna valida es {ULTIMA_COLUMNA}")
         elif fila_movida > ULTIMA_FILA or fila_movida < 0:
             raise IndexError(f"Error, {fila} no es una columna valida, el tablero es de {FILAS} x {COLUMNAS}; y la ultima fila valida es {ULTIMA_FILA}") #Estos dos errores no deberian ocurrir, pero si llegan a ocurrir, se tiene que crashear el programa para evitar un comportamiento no deseado
         self.tablero_mutable.pop(self.pieza_seleccionada)
-        
+
         self.pieza_seleccionada = (columna_movida, fila_movida)
 
     def casillas_ocupadas(self):
@@ -110,7 +110,6 @@ class Pieza:
 
 
             movimientos_validos.add(posibleMovimiento)
-            
-        
+
         self.movimientos_validos = movimientos_validos #TODO: Posiblemente arreglar
         return movimientos_validos
