@@ -17,3 +17,13 @@ def leer_movimientos(archivo):
                 diccionario_movimientos[pieza].add((dir_x * i, dir_y * i))
 
     return diccionario_movimientos
+
+def guardar_tablero(archivo, tablero, pieza_seleccionada):
+    with open(archivo, "w") as f:
+        f.write(str(pieza_seleccionada) + "\n" )
+        for coordenada, pieza in tablero.items():
+            f.write(str(coordenada) + ":" +  str(pieza) + "\n" )
+
+
+
+guardar_tablero("ultimo_tablero.csv", {(0,1) : "torre", (4,5) : "alfil"}, (6,0))
