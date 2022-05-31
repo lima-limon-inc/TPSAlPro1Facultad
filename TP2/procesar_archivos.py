@@ -20,6 +20,20 @@ def leer_movimientos(archivo):
 
 def guardar_tablero(archivo, tablero, pieza_seleccionada):
     with open(archivo, "w") as f:
-        f.write(str(pieza_seleccionada) + "\n" )
+        f.write(str(pieza_seleccionada)[1:-1] + "\n" )
         for coordenada, pieza in tablero.items():
-            f.write(str(coordenada) + ":" +  str(pieza) + "\n" )
+            f.write(str(coordenada)[1:-1] + ":" +  str(pieza) + "\n" )
+
+def leer_archivo(archivo):
+    with open(archivo, "r") as f:
+        pieza_seleccionada =  tuple([int(i) for i in f.readline().rstrip().split(", ")])
+        tablero = {}
+        for linea in f:
+            casilla, pieza = linea.rstrip().split(":")
+            casilla = tuple([int(i) for i in casilla.split(", ")])
+            tablero[casilla] = pieza
+            tablero[casilla] = (casilla[0], casilla[1], pieza)
+
+        return tablero, pieza_seleccionada
+
+

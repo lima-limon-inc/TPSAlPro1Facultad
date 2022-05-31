@@ -1,5 +1,5 @@
 # Imports
-from procesar_archivos import leer_movimientos
+from procesar_archivos import leer_movimientos, guardar_tablero, leer_archivo
 from random import choice, randint
 
 # Constantes relacionadas con el tablero:
@@ -8,6 +8,7 @@ COLUMNAS = 8
 ULTIMA_FILA = FILAS - 1
 ULTIMA_COLUMNA = COLUMNAS - 1
 ARCHIVO_GUARDADO = "ultimo_tablero.csv"
+ARCHIVO_FAILSAFE = "failsafe.csv"
 
 # Constantes relacionadas con los movimientos
 MOVIMIENTOS = leer_movimientos("movimientos.csv")
@@ -43,7 +44,7 @@ class Tablero:
 
             self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys()))) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
 
-        self.failsafe = (dir(self.tablero), tuple(self.pieza_seleccionada))
+        self.failsafe = (self.tablero.copy(), tuple(self.pieza_seleccionada))
 
     def actualizar_tablero(self, columna_destino, fila_destino):
         """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)"""
@@ -66,6 +67,31 @@ class Tablero:
 
     def casillas_ocupadas(self):
         return self.tablero.keys()
+
+    def resetear_tablero(self):
+        self.tablero = {}
+
+    def guardar_tablero_actual(self):
+        guardar_tablero(ARCHIVO_FAILSAFE, self.failsafe[0], self.failsafe[1]) #Guarda el archivo failsafe, por si el usuario tiene que reiniciar
+        guardar_tablero(ARCHIVO_GUARDADO, self.tablero, self.pieza_seleccionada) #Guarda el archivo failsafe, por si el usuario tiene que reiniciar
+
+    def cargar_archivo(self):
+        self.resetear_tablero()
+        tablero, self.pieza_seleccionada = leer_archivo(ARCHIVO_GUARDADO)
+        nuevo_tablero = {}
+        for localizacion, constructor in tablero.items():
+            fila, columna, tipo = constructor
+            nuevo_tablero[localizacion] = Pieza(fila, columna, tipo)
+
+        self.tablero = nuevo_tablero
+
+        tablero, pieza_seleccionada = leer_archivo(ARCHIVO_GUARDADO)
+        tablero_failsafe = {}
+        for localizacion, constructor in tablero.items():
+            fila, columna, tipo = constructor
+            tablero_failsafe[localizacion] = Pieza(fila, columna, tipo)
+        self.failsafe = (tablero_failsafe, pieza_seleccionada)
+
 
 class Pieza:
     def __init__(self,columna, fila, tipo):

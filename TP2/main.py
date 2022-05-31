@@ -32,6 +32,9 @@ class Game:
 
                 gamelib.draw_image(self.tablero.tablero[(columna,fila)].devolver_imagen((True if (columna, fila) == self.tablero.pieza_seleccionada else False)), columna * 44, fila * 44)
 
+                print()
+                print(self.tablero.tablero)
+                print(self.tablero.pieza_seleccionada)
                 if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
@@ -58,8 +61,13 @@ def main():
             if len(juego.tablero.tablero.keys()) <= 1:
                 juego.siguiente_nivel()
 
+        elif ev.type == gamelib.EventType.KeyPress:
+            if ev.key == "p":
+                print("apretaste p")
+                juego.tablero.guardar_tablero_actual()
 
-        #elif ev.type == gamelib.EventType.KeyPress:
-            #print(f'se ha presionado la tecla: {ev.key}')
+            elif ev.key == "c":
+               #print("apretaste c")
+                juego.tablero.cargar_archivo()
 
 gamelib.init(main)
