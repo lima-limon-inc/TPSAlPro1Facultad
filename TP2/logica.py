@@ -24,9 +24,6 @@ ALTO_VENTANA = PIEZA_LARGO * FILAS
 COLOR_BLANCO = "#2d2d3f"
 COLOR_NEGRO  = "#181818"
 
-
-
-
 class Tablero:
     def __init__(self, nivel):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
@@ -37,18 +34,16 @@ class Tablero:
         # La primera ficha es elegida aleatoriamente
         columna, fila = randint(0,7), randint(0,7)
 
-        self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys())), self.casillas_ocupadas()) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
+        self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys()))) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
 
         self.pieza_seleccionada = (columna, fila) #Hace referencia a la ficha con la que el jugador empieza
 
         for i in range(1, nivel + 2): #El "1," se debe a que la primera pieza la genero fuera del for loop
-            columna, fila = choice(list(self.tablero[columna, fila].movimientos_validos)) #Elige una posicion dentro de las posiciones validas de la ultima pieza, para poner la nueva pieza
+            columna, fila = choice(list(self.tablero[columna, fila].movimientos_validos - self.casillas_ocupadas())) #Elige una posicion dentro de las posiciones validas de la ultima pieza, para poner la nueva pieza
 
-            self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys())),self.casillas_ocupadas() ) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
+            self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys()))) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
 
         self.failsafe = (dir(self.tablero), tuple(self.pieza_seleccionada))
-        print()
-        print(self.tablero)
 
     def actualizar_tablero(self, columna_destino, fila_destino):
         """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)"""
@@ -73,14 +68,13 @@ class Tablero:
         return self.tablero.keys()
 
 class Pieza:
-    def __init__(self,columna, fila, tipo, casillas_ocupadas):
+    def __init__(self,columna, fila, tipo):
         self.fila = fila
         self.columna = columna
 
         self.tipo = tipo #Hace referencia a que tipo de pieza es (alfil, caballo, etc)
 
-        self.movimientos_validos = self.calcular_movimientos_validos(fila, columna, casillas_ocupadas) #
-        print(f"{self.tipo} + {self.movimientos_validos}")
+        self.movimientos_validos = self.calcular_movimientos_validos(fila, columna) #
 
     def __str__(self):
         return f"{self.tipo}"
@@ -93,7 +87,7 @@ class Pieza:
 
         return DIRECTORIO_SPRITES + str(self) + color
 
-    def calcular_movimientos_validos(self, fila, columna, casillas_ocupadas): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
+    def calcular_movimientos_validos(self, fila, columna): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
         movimientos_validos = set()
         for movimiento in MOVIMIENTOS[str(self)]:
             posibleColumna = columna + movimiento[0]
@@ -104,9 +98,7 @@ class Pieza:
 
             posibleMovimiento = (posibleColumna, posibleFila)
 
-            if posibleMovimiento in casillas_ocupadas: #Chequea que no haya dos piezas en el mismo lugar
-                continue
-
             movimientos_validos.add(posibleMovimiento)
 
         return movimientos_validos
+
