@@ -7,7 +7,7 @@ def leer_movimientos(archivo):
             pieza, dir_x_dir_y, extensible = linea.rstrip("\n").split(",")
             extensible =  extensible.capitalize()
             diccionario_movimientos[pieza] = diccionario_movimientos.get(pieza, set()) #"Sobreescribe" el valor si ya existe consigo mismo, caso contrario crea una lista vacia como valor
-            
+
             dir_x, dir_y = dir_x_dir_y.split(";")
             dir_x, dir_y = int(dir_x), int(dir_y)
 
@@ -23,7 +23,3 @@ def guardar_tablero(archivo, tablero, pieza_seleccionada):
         f.write(str(pieza_seleccionada) + "\n" )
         for coordenada, pieza in tablero.items():
             f.write(str(coordenada) + ":" +  str(pieza) + "\n" )
-
-
-
-guardar_tablero("ultimo_tablero.csv", {(0,1) : "torre", (4,5) : "alfil"}, (6,0))
