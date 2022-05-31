@@ -36,14 +36,14 @@ class Tablero:
         # La primera ficha es elegida aleatoriamente
         columna, fila = randint(0,7), randint(0,7)
 
-        self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys())), True, self.casillas_ocupadas()) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
+        self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys()))) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
 
         self.pieza_seleccionada = (columna, fila) #Hace referencia a la ficha con la que el jugador empieza
 
         for i in range(1, nivel + 2): #El "1," se debe a que la primera pieza la genero fuera del for loop
-            columna, fila = choice(list(self.tablero[columna, fila].movimientos_validos)) #Elige una posicion dentro de las posiciones validas de la ultima pieza, para poner la nueva pieza
+            columna, fila = choice(list(self.tablero[columna, fila].calcular_movimientos_validos(fila, columna, self.casillas_ocupadas()))) #Elige una posicion dentro de las posiciones validas de la ultima pieza, para poner la nueva pieza
 
-            self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys())), False, self.casillas_ocupadas()) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
+            self.tablero[columna, fila] = Pieza(columna, fila, choice(list(MOVIMIENTOS.keys()))) #MOVIMIENTOS.keys() son todos los tipos de piezas que el programa leyo en el archivo movimientos.csv. Empieza en True, porque la primera pieza generada es con la que el jugador empieza
 
         self.failsafe = (dir(self.tablero), tuple(self.pieza_seleccionada))
 
@@ -54,10 +54,12 @@ class Tablero:
         elif fila_destino > ULTIMA_FILA or fila_destino < 0:
             raise IndexError(f"Error, {fila} no es una columna valida, el tablero es de {FILAS} x {COLUMNAS}; y la ultima fila valida es {ULTIMA_FILA}") #Estos dos errores no deberian ocurrir, pero si llegan a ocurrir, se tiene que crashear el programa para evitar un comportamiento no deseado
 
-        if (columna_destino, fila_destino) not in self.tablero[self.pieza_seleccionada].movimientos_validos:
-            print("MOVIMIENTO INVALIDO")
+        if (columna_destino, fila_destino) not in self.tablero[self.pieza_seleccionada].calcular_movimientos_validos(fila, columna, self.casillas_ocupadas()):
+            #print("LA FICHA SELECCIONADA NO SE PUEDE MOVER AHI")
             return None
-
+        if (columna_destino, fila_destino) not in self.casillas_ocupadas():
+            #print("NO HAY FICHAS")
+            return None
 
         if not self.tablero[columna_destino, fila_destino].seleccionado:
             self.tablero[columna_destino, fila_destino].hacer_activa()
@@ -80,7 +82,7 @@ class Pieza:
 
         self.imagen = self.devolver_imagen(self.seleccionado) # La funcion devuelve la imagen, dependiendo de si la ficha fue seleccionada o no
 
-        self.movimientos_validos = self.calcular_movimientos_validos(fila, columna, casillas_ocupadas) #
+       #self.movimientos_validos = self.calcular_movimientos_validos(fila, columna, casillas_ocupadas) #
 
     def __str__(self):
         return f"{self.tipo}"

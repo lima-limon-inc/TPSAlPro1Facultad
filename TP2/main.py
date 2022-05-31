@@ -32,7 +32,7 @@ class Game:
 
                 gamelib.draw_image(self.tablero.tablero[(columna,fila)].devolver_imagen((True if (columna, fila) == self.tablero.pieza_seleccionada else False)), columna * 44, fila * 44)
 
-                if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
+                if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].calcular_movimientos_validos(fila, columna, self.casillas_ocupadas()): # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
         gamelib.draw_end()
@@ -51,13 +51,15 @@ def main():
             break
 
         if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1:
-            print(f'se ha presionado el botón del mouse: {ev.x} {ev.y}')
+            #print(f'se ha presionado el botón del mouse: {ev.x} {ev.y}')
             columna, fila = juego.de_click_a_diccionario(ev.x, ev.y)
-            print(columna, fila)
+            #print(columna, fila)
             juego.tablero.actualizar_tablero(columna, fila)
+            if len(juego.tablero.tablero.keys()) <= 1:
+                juego.siguiente_nivel()
 
 
-        elif ev.type == gamelib.EventType.KeyPress:
-            print(f'se ha presionado la tecla: {ev.key}')
+        #elif ev.type == gamelib.EventType.KeyPress:
+            #print(f'se ha presionado la tecla: {ev.key}')
 
 gamelib.init(main)
