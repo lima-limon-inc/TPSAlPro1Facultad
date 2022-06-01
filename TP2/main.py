@@ -3,8 +3,11 @@ from logica import *
 
 
 class Game:
-    def __init__(self, nivel):
+    def __init__(self, nivel, titulo, ancho, largo):
         self.nivel = nivel
+        self.titulo = titulo
+        self.ancho = ancho
+        self.largo = largo
         self.tablero = Tablero(self.nivel)
 
     def siguiente_nivel(self):
@@ -18,6 +21,7 @@ class Game:
         return columna, fila
 
     def mostrar(self):
+        gamelib.draw_text(self.titulo, 0, ALTO_VENTANA + ESPACIO_MENSAJE // 3, anchor="w")
         for fila in range(FILAS):
             pintar_blanco = (False if fila % 2 ==0 else True)
 
@@ -35,25 +39,26 @@ class Game:
                 if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
-        gamelib.draw_end()
 
 def main():
-    gamelib.title("Shape Shifter Chess")
-    gamelib.resize(ANCHO_VENTANA, ALTO_VENTANA)
+    juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
+    gamelib.title(juego.titulo)
+    gamelib.resize(juego.ancho, juego.largo)
 
-    juego = Game(1)
 
     while gamelib.is_alive():
+
+        gamelib.draw_begin()
         juego.mostrar()
+        gamelib.draw_end()
 
         ev = gamelib.wait()
         if not ev:
             break
 
-        if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1:
-            #print(f'se ha presionado el botón del mouse: {ev.x} {ev.y}')
+        if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1: #El usuario apreto el click izquierdo
             columna, fila = juego.de_click_a_diccionario(ev.x, ev.y)
-            #print(columna, fila)
+
             juego.tablero.actualizar_tablero(columna, fila)
             if len(juego.tablero.tablero.keys()) <= 1:
                 juego.siguiente_nivel()
