@@ -19,11 +19,22 @@ PIEZA_LARGO = 44
 DIRECTORIO_SPRITES = "sprites/"
 
 # Constantes relacionadas con la ventana
-ESPACIO_MENSAJE = 50
 ANCHO_VENTANA = PIEZA_ANCHO * COLUMNAS
 ALTO_VENTANA = PIEZA_LARGO * FILAS
 COLOR_BLANCO = "#2d2d3f"
 COLOR_NEGRO  = "#181818"
+
+# Constantes relacionada con los mensajes en pantalla
+TAMANO_TEXTO = 9
+ESPACIO_MENSAJE = 50
+PRIMERA_COLUMNA = 0 + PIEZA_ANCHO //2 
+SEGUNDA_COLUMNA = 0
+PRIMER_FILA_MENSAJES = ALTO_VENTANA +  ESPACIO_MENSAJE // 4
+SEGUNDA_FILA_MENSAJES = ALTO_VENTANA + ESPACIO_MENSAJE // 2  + TAMANO_TEXTO
+
+# Constantes relacionadas con el teclado
+TECLA_PARA_GUARDAR_TABLERO = "g"
+TECLA_PARA_CARGAR_TABLERO = "Z"
 
 class Tablero:
     def __init__(self, nivel):

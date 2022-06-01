@@ -8,6 +8,8 @@ class Game:
         self.titulo = titulo
         self.ancho = ancho
         self.largo = largo
+        self.tecla_restar = TECLA_PARA_CARGAR_TABLERO
+        self.tecla_guardar = TECLA_PARA_GUARDAR_TABLERO
         self.tablero = Tablero(self.nivel)
 
     def siguiente_nivel(self):
@@ -21,7 +23,9 @@ class Game:
         return columna, fila
 
     def mostrar(self):
-        gamelib.draw_text(self.titulo, 0, ALTO_VENTANA + ESPACIO_MENSAJE // 3, anchor="w")
+        gamelib.draw_text(self.titulo, 0 + PIEZA_ANCHO //2 , PRIMER_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el titulo del juego
+        gamelib.draw_text(f"Nivel: {self.nivel}", 0 + PIEZA_ANCHO //2 , SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el titulo del juego
+
         for fila in range(FILAS):
             pintar_blanco = (False if fila % 2 ==0 else True)
 
@@ -39,37 +43,36 @@ class Game:
                 if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
+    def main(self):
+        gamelib.title(juego.titulo) #Le pone el titulo a la ventana, el cual coincide con el titulo de la clase Game
+        gamelib.resize(juego.ancho, juego.largo)
 
-def main():
-    juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
-    gamelib.title(juego.titulo)
-    gamelib.resize(juego.ancho, juego.largo)
+        while gamelib.is_alive():
+
+            gamelib.draw_begin()
+            juego.mostrar()
+            gamelib.draw_end()
+
+            ev = gamelib.wait()
+            if not ev:
+                break
+
+            if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1: #El usuario apreto el click izquierdo
+                columna, fila = juego.de_click_a_diccionario(ev.x, ev.y)
+
+                juego.tablero.actualizar_tablero(columna, fila)
+                if len(juego.tablero.tablero.keys()) <= 1: #Si solo hay 1 pieza, pasar al siguiente nivel (El menor esta puesto por si hay algun error de procesamiento(?) auqnue no deberia suceder)
+                    juego.siguiente_nivel()
+
+            elif ev.type == gamelib.EventType.KeyPress:
+                if ev.key == "p":
+                    print("apretaste p")
+                    juego.tablero.guardar_tablero_actual()
+
+                elif ev.key == "c":
+                   #print("apretaste c")
+                    juego.tablero.cargar_archivo()
 
 
-    while gamelib.is_alive():
-
-        gamelib.draw_begin()
-        juego.mostrar()
-        gamelib.draw_end()
-
-        ev = gamelib.wait()
-        if not ev:
-            break
-
-        if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1: #El usuario apreto el click izquierdo
-            columna, fila = juego.de_click_a_diccionario(ev.x, ev.y)
-
-            juego.tablero.actualizar_tablero(columna, fila)
-            if len(juego.tablero.tablero.keys()) <= 1:
-                juego.siguiente_nivel()
-
-        elif ev.type == gamelib.EventType.KeyPress:
-            if ev.key == "p":
-                print("apretaste p")
-                juego.tablero.guardar_tablero_actual()
-
-            elif ev.key == "c":
-               #print("apretaste c")
-                juego.tablero.cargar_archivo()
-
-gamelib.init(main)
+juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
+gamelib.init(juego.main)
