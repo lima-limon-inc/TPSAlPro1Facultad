@@ -1,3 +1,4 @@
+import os
 # Archivo encargado de procesar archivos
 
 def leer_movimientos(archivo):
@@ -24,7 +25,7 @@ def guardar_tablero(archivo, tablero, pieza_seleccionada):
         for coordenada, pieza in tablero.items():
             f.write(str(coordenada)[1:-1] + ":" +  str(pieza) + "\n" )
 
-def leer_archivo(archivo):
+def leer_archivo(archivo): #TODO: Anadir procesamiento de lo que pasa si el archivo no existe
     with open(archivo, "r") as f:
         pieza_seleccionada =  tuple([int(i) for i in f.readline().rstrip().split(", ")])
         tablero = {}
