@@ -1,6 +1,6 @@
 import gamelib
 from logica import *
-
+import os
 
 class Game:
     '''
@@ -99,16 +99,17 @@ class Game:
         gamelib.say(f"Bienvenido a {self.titulo}.\nPodes apretar '{TECLA_PARA_GUARDAR_TABLERO}' en cualquier momento para guardar la partida y seguirla mas tarde")
         respuesta = ""
         mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No)"
-        while True:
-            respuesta = gamelib.input(mensaje)
-            if respuesta == None:
-                respuesta = "no"
-            respuesta = respuesta.lower()
-            if respuesta == "si" or respuesta == "no":
-                break
-            mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No) \nPorfavor ingresa 'Si' o 'No'"
-        if respuesta == "si":
-            self.nivel = self.tablero.cargar_archivo()
+        if os.path.exists(ARCHIVO_GUARDADO):
+            while True:
+                respuesta = gamelib.input(mensaje)
+                if respuesta == None:
+                    respuesta = "no"
+                respuesta = respuesta.lower()
+                if respuesta == "si" or respuesta == "no":
+                    break
+                mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No) \nPorfavor ingresa 'Si' o 'No'"
+            if respuesta == "si":
+                self.nivel = self.tablero.cargar_archivo()
 
 
     def main(self):

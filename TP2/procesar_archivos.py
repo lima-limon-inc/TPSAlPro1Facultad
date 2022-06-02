@@ -1,4 +1,3 @@
-import os
 # Archivo encargado de procesar archivos
 
 def leer_movimientos(archivo):
