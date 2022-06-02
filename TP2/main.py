@@ -25,6 +25,7 @@ class Game:
         return columna, fila
 
     def mostrar(self):
+        gamelib.draw_begin()
         gamelib.draw_text(self.titulo, 0 + PIEZA_ANCHO //2 , PRIMER_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el titulo del juego
         gamelib.draw_text(f"Nivel: {self.nivel}", 0 + PIEZA_ANCHO //2 , SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el nivel actual
         gamelib.draw_text(f"Salir: {self.tecla_salir}", SEGUNDA_COLUMNA, PRIMER_FILA_MENSAJES, anchor="w", bold=True, size=TAMANO_TEXTO)
@@ -46,6 +47,7 @@ class Game:
 
                 if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
+        gamelib.draw_end()
 
     def pantalla_inicio(self):
         respuesta = ""
@@ -54,7 +56,7 @@ class Game:
             respuesta = gamelib.input(mensaje)
 
             if respuesta == None:
-                respuesta = "no" 
+                respuesta = "no"
 
             respuesta = respuesta.lower()
             if respuesta == "si" or respuesta == "no":
@@ -74,9 +76,7 @@ class Game:
 
         while gamelib.is_alive():
 
-            gamelib.draw_begin()
             juego.mostrar()
-            gamelib.draw_end()
 
             ev = gamelib.wait()
             if not ev:
