@@ -1,7 +1,7 @@
 from logica import *
 
 class Game:
-    ''':w
+    ''':wq
     La clase Game representa el "juego" en si mismo, todo lo que involucra la interaccion con el usuario. No representa ningun objeto en particular. Sino mas un "meta" objeto
     '''
     def __init__(self, nivel, titulo, ancho, largo):
