@@ -69,14 +69,17 @@ class Game:
                     juego.siguiente_nivel()
 
             elif ev.type == gamelib.EventType.KeyPress:
-                if ev.key == "p":
-                    print("apretaste p")
+                if ev.key == TECLA_PARA_GUARDAR_TABLERO:
                     juego.tablero.guardar_tablero_actual()
 
-                elif ev.key == "c":
-                   #print("apretaste c")
+                elif ev.key == TECLA_PARA_CARGAR_TABLERO:
                     juego.tablero.cargar_archivo()
 
+                elif ev.key == TECLA_PARA_REINTENTAR:
+                    juego.tablero.reintentar()
+
+                elif ev.key == TECLA_PARA_CERRAR_JUEGO:
+                    pass
 
 juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
 gamelib.init(juego.main)

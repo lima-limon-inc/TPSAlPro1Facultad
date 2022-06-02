@@ -105,6 +105,10 @@ class Tablero:
             tablero_failsafe[localizacion] = Pieza(fila, columna, tipo)
         self.failsafe = (tablero_failsafe, pieza_seleccionada)
 
+    def reintentar(self):
+        self.tablero = self.failsafe[0]
+        self.pieza_seleccionada = self.failsafe[1]
+
 
 class Pieza:
     def __init__(self,columna, fila, tipo):
