@@ -25,19 +25,44 @@ class Game:
         self.tablero = Tablero(self.nivel)
 
     def siguiente_nivel(self):
+        '''
+        Funcion que se invoca cuando el usuario completa el nivel actual.
+        Recibe:
+            0. None
+        Devuelve:
+            0. None
+            Funcion impura, muta el estado del nivel y genera un nuevo tablero
+        '''
         self.nivel += 1
         self.tablero = Tablero(self.nivel)
 
     def de_click_a_diccionario(self, coord_x, coord_y):
+        '''
+        Funcion que transforma los clicks del usuario a la casilla del tablero correspondiente
+        Recibe:
+            0. coord_x -> int. Coordenada x del click
+            1. coord_y -> int. Coordenada y del click
+        Devuelve:
+            0. columa -> int. Columna correspondiente del tablero
+            1. fila -> int. Fila correspondiente del tablero
+        '''
         columna = coord_x // PIEZA_ANCHO
         fila = coord_y // PIEZA_LARGO
 
-        if fila > ULTIMA_COLUMNA or columna > ULTIMA_FILA: #Si el usuario hace click fuera del tablero, devolvemos None, None para que este click sea ignorado
+        if fila > ULTIMA_COLUMNA or columna > ULTIMA_FILA: #Si el usuario hace click fuera del tablero, devolvemos (None, None) para que este click sea ignorado
             columna, fila = None, None
 
         return columna, fila
 
     def mostrar(self):
+        '''
+        Funcion que se encarga de mostrar la representacion grafica del programa
+        Recibe:
+            0. None
+        Devuele:
+            0. None
+            Funcion impura, solo tiene efectos secundarios
+        '''
         gamelib.draw_begin()
         gamelib.draw_text(self.titulo, 0 + PIEZA_ANCHO //2 , PRIMER_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el titulo del juego
         gamelib.draw_text(f"Nivel: {self.nivel}", 0 + PIEZA_ANCHO //2 , SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el nivel actual
@@ -45,7 +70,7 @@ class Game:
         gamelib.draw_text(f"Reintentar: {self.tecla_reintentar}", SEGUNDA_COLUMNA, SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size=TAMANO_TEXTO)
 
         for fila in range(FILAS):
-            pintar_blanco = (False if fila % 2 ==0 else True)
+            pintar_blanco = (False if fila % 2 ==0 else True) #El valor de "pintar_blanco" esta "al reves". Esto se debe a que lo primero que hace el siguiente for loop es "switchear" el valor de pintar_blanco; por eso pintar_blanco empieza como "False" a pesar de que la primera casilla SI se tiene que pintar de blanco. Esto se podria poner "al derecho" (True if fila % 2 ==0 else False) si pusiese el switch de pintar_blanco al FINAL del siguiente for loop; pero preferi dejarlo "al reves" asi todas las menciones de pintar_blanco estan una al lado de la otra.
 
             for columna in range(COLUMNAS):
                 pintar_blanco = not pintar_blanco
@@ -56,37 +81,49 @@ class Game:
                 if (columna, fila) not in self.tablero.tablero:
                     continue #Una vez dibujados la cuadricula, solo nos interesa dibujar las piezas. Si no hay una pieza en la coordenada actual, vamos al siguiente ciclo
 
-                gamelib.draw_image(self.tablero.tablero[(columna,fila)].devolver_imagen((True if (columna, fila) == self.tablero.pieza_seleccionada else False)), columna * 44, fila * 44)
+                gamelib.draw_image(self.tablero.tablero[(columna,fila)].devolver_imagen((True if (columna, fila) == self.tablero.pieza_seleccionada else False)), columna * PIEZA_ANCHO, fila * PIEZA_LARGO)
 
                 if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
-                    gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
+                    gamelib.draw_rectangle(columna * PIEZA_ANCHO + 3, fila * PIEZA_LARGO + 3, columna * PIEZA_ANCHO + 41, fila * PIEZA_LARGO +41,fill = "" , outline=COLOR_ROJO, width=2) # Los +3 y +41 son "correctores" para que quede correcto el cuadrado rojo alrededor de las piezas
         gamelib.draw_end()
 
     def pantalla_inicio(self):
+        '''
+        Funcion que "recibe" al usuario y le pregunta si quiere cargar la partida guardada. Ademas le informa sobre el funcionamiento de algunas de las teclas del teclado.
+        Recibe:
+            0. None
+        Devuele:
+            0. None
+            Funcion impropia, solo tiene efectos secundarios
+        '''
         gamelib.say(f"Bienvenido a {self.titulo}.\nPodes apretar '{TECLA_PARA_GUARDAR_TABLERO}' en cualquier momento para guardar la partida y seguirla mas tarde")
         respuesta = ""
         mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No)"
         while True:
             respuesta = gamelib.input(mensaje)
-
             if respuesta == None:
                 respuesta = "no"
-
             respuesta = respuesta.lower()
             if respuesta == "si" or respuesta == "no":
                 break
             mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No) \nPorfavor ingresa 'Si' o 'No'"
-
         if respuesta == "si":
             self.nivel = self.tablero.cargar_archivo()
 
 
     def main(self):
-
+        '''
+        Funcion principal del programa. Esta se encarga de procesar todos los clicks del usaurio, en las respectivas posiciones y de asociarlo con la respectiva funcion
+        Recibe:
+            0. None
+        Devuele:
+            0. None
+            Funcion impropia, solo tiene efectos secundarios
+        '''
         self.pantalla_inicio()
 
         gamelib.title(juego.titulo) #Le pone el titulo a la ventana, el cual coincide con el titulo de la clase Game
-        gamelib.resize(juego.ancho, juego.largo)
+        gamelib.resize(juego.ancho, juego.largo) le da el tamano a la ventana
 
         while gamelib.is_alive():
 
@@ -111,9 +148,6 @@ class Game:
 
                 elif ev.key == TECLA_PARA_REINTENTAR:
                     juego.tablero.reintentar()
-
-                elif ev.key == TECLA_PARA_CERRAR_JUEGO:
-                    pass
 
 juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
 gamelib.init(juego.main)

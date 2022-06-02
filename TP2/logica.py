@@ -23,6 +23,7 @@ ANCHO_VENTANA = PIEZA_ANCHO * COLUMNAS
 ALTO_VENTANA = PIEZA_LARGO * FILAS
 COLOR_BLANCO = "#2d2d3f"
 COLOR_NEGRO  = "#181818"
+COLOR_ROJO   = "#db0404"
 
 # Constantes relacionada con los mensajes en pantalla
 TAMANO_TEXTO = 9
