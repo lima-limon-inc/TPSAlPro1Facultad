@@ -47,15 +47,28 @@ class Game:
                 if (columna, fila) in self.tablero.tablero[self.tablero.pieza_seleccionada].movimientos_validos: # Si la pieza que va a dibujar se encuentra en algunas de los lugares donde la pieza seleccionada se puede mover, dibujamos un rectangulo rojo
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
-    def main(self):
+    def pantalla_inicio(self):
         respuesta = ""
         mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No)"
         while True:
             respuesta = gamelib.input(mensaje)
-            if respuesta == None or respuesta.lower() == "si" or respuesta.lower() == "no":
+
+            if respuesta == None:
+                respuesta = "no" 
+
+            respuesta = respuesta.lower()
+            if respuesta == "si" or respuesta == "no":
                 break
             mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No) \nPorfavor ingresa 'Si' o 'No'"
-        print(respuesta)
+
+        if respuesta == "si":
+            self.tablero.cargar_archivo()
+
+
+    def main(self):
+
+        self.pantalla_inicio()
+
         gamelib.title(juego.titulo) #Le pone el titulo a la ventana, el cual coincide con el titulo de la clase Game
         gamelib.resize(juego.ancho, juego.largo)
 
@@ -79,9 +92,6 @@ class Game:
             elif ev.type == gamelib.EventType.KeyPress:
                 if ev.key == TECLA_PARA_GUARDAR_TABLERO:
                     juego.tablero.guardar_tablero_actual()
-
-                elif ev.key == TECLA_PARA_CARGAR_TABLERO:
-                    juego.tablero.cargar_archivo()
 
                 elif ev.key == TECLA_PARA_REINTENTAR:
                     juego.tablero.reintentar()

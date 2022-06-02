@@ -1,8 +1,6 @@
-3, 0
-3, 0:torre
-1, 0:torre
-1, 6:torre
-7, 6:caballo
-5, 7:alfil
-1, 3:alfil
-2, 2:torre
+4, 5
+4, 5:alfil
+7, 2:caballo
+6, 0:caballo
+4, 1:alfil
+3, 2:alfil
