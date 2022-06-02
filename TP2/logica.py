@@ -38,6 +38,7 @@ TECLA_PARA_CARGAR_TABLERO = "c"
 TECLA_PARA_REINTENTAR = "Z"
 TECLA_PARA_CERRAR_JUEGO = "Esc"
 
+
 class Tablero:
     def __init__(self, nivel):
         self.tablero = {} # (Columna (x), Fila (y)): Pieza
