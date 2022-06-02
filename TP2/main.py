@@ -1,9 +1,7 @@
-import gamelib
 from logica import *
-import os
 
 class Game:
-    '''
+    ''':w
     La clase Game representa el "juego" en si mismo, todo lo que involucra la interaccion con el usuario. No representa ningun objeto en particular. Sino mas un "meta" objeto
     '''
     def __init__(self, nivel, titulo, ancho, largo):
@@ -12,7 +10,7 @@ class Game:
         Recibe:
             0. nivel -> int. Nivel en el que estas
         Devuelve:
-            0. Una instancia de la clase Tablero.
+            0. Una instancia de la clase Tablero.G
         '''
         self.nivel = nivel
         self.titulo = titulo
@@ -99,7 +97,7 @@ class Game:
         gamelib.say(f"Bienvenido a {self.titulo}.\nPodes apretar '{TECLA_PARA_GUARDAR_TABLERO}' en cualquier momento para guardar la partida y seguirla mas tarde")
         respuesta = ""
         mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No)"
-        if os.path.exists(ARCHIVO_GUARDADO):
+        if os.path.exists(ARCHIVO_GUARDADO): #El programa solo te pregunta si queres cargar tu partida si *existe* una partida cargada
             while True:
                 respuesta = gamelib.input(mensaje)
                 if respuesta == None:

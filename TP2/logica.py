@@ -1,4 +1,6 @@
 # Imports
+import os
+import gamelib
 from procesar_archivos import leer_movimientos, guardar_tablero, leer_archivo
 from random import choice, randint
 
@@ -16,7 +18,7 @@ MOVIMIENTOS = leer_movimientos("movimientos.csv")
 # Constantes relacionadas con las piezas
 PIEZA_ANCHO = 44
 PIEZA_LARGO = 44
-DIRECTORIO_SPRITES = "sprites/"
+DIRECTORIO_SPRITES = "sprites"
 
 # Constantes relacionadas con la ventana
 ANCHO_VENTANA = PIEZA_ANCHO * COLUMNAS
@@ -195,7 +197,7 @@ class Pieza:
         else:
             color =  "_blanco.gif"
 
-        return DIRECTORIO_SPRITES + str(self) + color
+        return os.path.join(DIRECTORIO_SPRITES, str(self) + color)
 
     def calcular_movimientos_validos(self, fila, columna): #Esta funcion usa como referencia la constante global MOVIMIENTOS. La guarde como constante global ya que es la misma para todas las fichas
         movimientos_validos = set()
