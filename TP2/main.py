@@ -3,7 +3,17 @@ from logica import *
 
 
 class Game:
+    '''
+    La clase Game representa el "juego" en si mismo, todo lo que involucra la interaccion con el usuario. No representa ningun objeto en particular. Sino mas un "meta" objeto
+    '''
     def __init__(self, nivel, titulo, ancho, largo):
+        '''
+        Constructor de la clase Game, recibe
+        Recibe:
+            0. nivel -> int. Nivel en el que estas
+        Devuelve:
+            0. Una instancia de la clase Tablero.
+        '''
         self.nivel = nivel
         self.titulo = titulo
         self.ancho = ancho
