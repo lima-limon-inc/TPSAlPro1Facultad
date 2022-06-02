@@ -27,7 +27,7 @@ COLOR_NEGRO  = "#181818"
 # Constantes relacionada con los mensajes en pantalla
 TAMANO_TEXTO = 9
 ESPACIO_MENSAJE = 50
-PRIMERA_COLUMNA = 0 + PIEZA_ANCHO //2 
+PRIMERA_COLUMNA = 0 + PIEZA_ANCHO //2
 SEGUNDA_COLUMNA = 0
 PRIMER_FILA_MENSAJES = ALTO_VENTANA +  ESPACIO_MENSAJE // 4
 SEGUNDA_FILA_MENSAJES = ALTO_VENTANA + ESPACIO_MENSAJE // 2  + TAMANO_TEXTO
@@ -106,9 +106,6 @@ class Tablero:
 
 class Pieza:
     def __init__(self,columna, fila, tipo):
-        self.fila = fila
-        self.columna = columna
-
         self.tipo = tipo #Hace referencia a que tipo de pieza es (alfil, caballo, etc)
 
         self.movimientos_validos = self.calcular_movimientos_validos(fila, columna) #
