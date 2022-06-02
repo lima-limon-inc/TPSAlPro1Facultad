@@ -61,12 +61,6 @@ class Tablero:
         self.failsafe = (self.tablero.copy(), tuple(self.pieza_seleccionada))
 
     def actualizar_tablero(self, columna_destino, fila_destino):
-        """Funcion que toma una ficha de la posicion (x1,y1) y la lleva a la posicion (x2,y2)"""
-        if columna_destino > ULTIMA_COLUMNA or columna_destino < 0:
-            raise IndexError(f"Error, {columna} no es una columna valida, el tablero es de {FILAS} x {COLUMNAS}; y la ultima columna valida es {ULTIMA_COLUMNA}")
-        elif fila_destino > ULTIMA_FILA or fila_destino < 0:
-            raise IndexError(f"Error, {fila} no es una columna valida, el tablero es de {FILAS} x {COLUMNAS}; y la ultima fila valida es {ULTIMA_FILA}") #Estos dos errores no deberian ocurrir, pero si llegan a ocurrir, se tiene que crashear el programa para evitar un comportamiento no deseado
-
         if (columna_destino, fila_destino) not in self.tablero[self.pieza_seleccionada].movimientos_validos:
             return None
         if (columna_destino, fila_destino) not in self.casillas_ocupadas():
@@ -144,4 +138,3 @@ class Pieza:
             movimientos_validos.add(posibleMovimiento)
 
         return movimientos_validos
-

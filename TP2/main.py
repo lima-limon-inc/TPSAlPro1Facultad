@@ -22,6 +22,9 @@ class Game:
         columna = coord_x // PIEZA_ANCHO
         fila = coord_y // PIEZA_LARGO
 
+        if fila > ULTIMA_COLUMNA or columna > ULTIMA_FILA: #Si el usuario hace click fuera del tablero, devolvemos None, None para que este click sea ignorado
+            columna, fila = None, None
+
         return columna, fila
 
     def mostrar(self):
@@ -84,6 +87,8 @@ class Game:
 
             if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1: #El usuario apreto el click izquierdo
                 columna, fila = juego.de_click_a_diccionario(ev.x, ev.y)
+                if columna == None and fila == None: #El usuario hizo click fuera del tablero. Si esto paso, ignoramos este click
+                    continue
 
                 juego.tablero.actualizar_tablero(columna, fila)
                 if len(juego.tablero.tablero.keys()) <= 1: #Si solo hay 1 pieza, pasar al siguiente nivel (El menor esta puesto por si hay algun error de procesamiento(?) auqnue no deberia suceder)
