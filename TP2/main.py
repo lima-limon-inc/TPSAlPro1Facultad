@@ -64,7 +64,7 @@ class Game:
             mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No) \nPorfavor ingresa 'Si' o 'No'"
 
         if respuesta == "si":
-            self.tablero.cargar_archivo()
+            self.nivel = self.tablero.cargar_archivo()
 
 
     def main(self):

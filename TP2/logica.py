@@ -99,12 +99,14 @@ class Tablero:
 
         self.tablero = nuevo_tablero
 
-        tablero, pieza_seleccionada = leer_archivo(ARCHIVO_GUARDADO)
+        tablero, pieza_seleccionada = leer_archivo(ARCHIVO_FAILSAFE)
         tablero_failsafe = {}
         for localizacion, constructor in tablero.items():
             fila, columna, tipo = constructor
             tablero_failsafe[localizacion] = Pieza(fila, columna, tipo)
         self.failsafe = (tablero_failsafe, pieza_seleccionada)
+
+        return len(self.failsafe[0].keys()) - 2
 
     def reintentar(self):
         self.tablero = self.failsafe[0].copy()
