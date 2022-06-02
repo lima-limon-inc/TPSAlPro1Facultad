@@ -48,6 +48,14 @@ class Game:
                     gamelib.draw_rectangle(columna * 44 + 3, fila * 44 + 3, columna * 44 + 41, fila * 44 +41,fill = "" , outline="#db0404", width=2)
 
     def main(self):
+        respuesta = ""
+        mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No)"
+        while True:
+            respuesta = gamelib.input(mensaje)
+            if respuesta == None or respuesta.lower() == "si" or respuesta.lower() == "no":
+                break
+            mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No) \nPorfavor ingresa 'Si' o 'No'"
+        print(respuesta)
         gamelib.title(juego.titulo) #Le pone el titulo a la ventana, el cual coincide con el titulo de la clase Game
         gamelib.resize(juego.ancho, juego.largo)
 
