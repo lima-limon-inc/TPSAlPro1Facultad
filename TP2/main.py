@@ -53,6 +53,7 @@ class Game:
         gamelib.draw_end()
 
     def pantalla_inicio(self):
+        gamelib.say(f"Bienvenido a {self.titulo}.\nPodes apretar '{TECLA_PARA_GUARDAR_TABLERO}' en cualquier momento para guardar la partida y seguirla mas tarde")
         respuesta = ""
         mensaje = "Partida guardada encontrada, queres seguir desde ahi? (Si/No)"
         while True:
