@@ -123,7 +123,7 @@ class Game:
         self.pantalla_inicio()
 
         gamelib.title(juego.titulo) #Le pone el titulo a la ventana, el cual coincide con el titulo de la clase Game
-        gamelib.resize(juego.ancho, juego.largo) le da el tamano a la ventana
+        gamelib.resize(juego.ancho, juego.largo)# le da el tamano a la ventana
 
         while gamelib.is_alive():
 
@@ -148,6 +148,9 @@ class Game:
 
                 elif ev.key == TECLA_PARA_REINTENTAR:
                     juego.tablero.reintentar()
+
+                elif ev.key == TECLA_PARA_CERRAR_JUEGO:
+                    break
 
 juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
 gamelib.init(juego.main)

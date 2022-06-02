@@ -2,6 +2,13 @@ import os
 # Archivo encargado de procesar archivos
 
 def leer_movimientos(archivo):
+    '''
+    Funcion que se encarga de leer el archivos que contiene los movimientos de las distintas piezas.
+    Recibe:
+        0. archivos -> str. Direccion del archivo que queremos leer
+    Devuele:
+        0. diccionario_movimientos -> dict. Diccionario con todos los movimientos validos de cada pieza
+    '''
     diccionario_movimientos = {}
     with open(archivo, "r") as f:
         for linea in f:
@@ -20,12 +27,29 @@ def leer_movimientos(archivo):
     return diccionario_movimientos
 
 def guardar_tablero(archivo, tablero, pieza_seleccionada):
+    '''
+    Funcion que se encarga de guardar un tablero cualquiera (incluyendo la pieza_seleccionada)
+    Recibe:
+        0. tablero -> dict. Diccionario que representa el tablero de juego
+        1. pieza_seleccionada -> tuple. Coordenada de la pieza que el con la que usuario empieza
+    Devuele:
+        0. None
+        Funcion impropia, solo tiene efectos secundarios
+    '''
     with open(archivo, "w") as f:
         f.write(str(pieza_seleccionada)[1:-1] + "\n" )
         for coordenada, pieza in tablero.items():
             f.write(str(coordenada)[1:-1] + ":" +  str(pieza) + "\n" )
 
 def leer_archivo(archivo): #TODO: Anadir procesamiento de lo que pasa si el archivo no existe
+    '''
+    Funcion que se encarga de leer un archivo y devolver los valores procesados
+    Recibe:
+        0. archivos -> str. Direccion del archivo que queremos leer
+    Devuelve:
+        0. tablero -> dict. Diccionario que representa el tablero de juego
+        1. pieza_seleccionada -> tuple. Coordenada de la pieza que el con la que usuario empieza
+    '''
     with open(archivo, "r") as f:
         pieza_seleccionada =  tuple([int(i) for i in f.readline().rstrip().split(", ")])
         tablero = {}
