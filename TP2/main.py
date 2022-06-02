@@ -10,6 +10,8 @@ class Game:
         self.largo = largo
         self.tecla_restar = TECLA_PARA_CARGAR_TABLERO
         self.tecla_guardar = TECLA_PARA_GUARDAR_TABLERO
+        self.tecla_salir = TECLA_PARA_CERRAR_JUEGO
+        self.tecla_reintentar = TECLA_PARA_REINTENTAR
         self.tablero = Tablero(self.nivel)
 
     def siguiente_nivel(self):
@@ -24,7 +26,9 @@ class Game:
 
     def mostrar(self):
         gamelib.draw_text(self.titulo, 0 + PIEZA_ANCHO //2 , PRIMER_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el titulo del juego
-        gamelib.draw_text(f"Nivel: {self.nivel}", 0 + PIEZA_ANCHO //2 , SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el titulo del juego
+        gamelib.draw_text(f"Nivel: {self.nivel}", 0 + PIEZA_ANCHO //2 , SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size = TAMANO_TEXTO) #Dibuja el nivel actual
+        gamelib.draw_text(f"Salir: {self.tecla_salir}", SEGUNDA_COLUMNA, PRIMER_FILA_MENSAJES, anchor="w", bold=True, size=TAMANO_TEXTO)
+        gamelib.draw_text(f"Reintentar: {self.tecla_reintentar}", SEGUNDA_COLUMNA, SEGUNDA_FILA_MENSAJES, anchor="w", bold=True, size=TAMANO_TEXTO)
 
         for fila in range(FILAS):
             pintar_blanco = (False if fila % 2 ==0 else True)
