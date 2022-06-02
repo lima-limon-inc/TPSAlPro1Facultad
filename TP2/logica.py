@@ -106,8 +106,8 @@ class Tablero:
         self.failsafe = (tablero_failsafe, pieza_seleccionada)
 
     def reintentar(self):
-        self.tablero = self.failsafe[0]
-        self.pieza_seleccionada = self.failsafe[1]
+        self.tablero = self.failsafe[0].copy()
+        self.pieza_seleccionada = tuple(self.failsafe[1])
 
 
 class Pieza:
