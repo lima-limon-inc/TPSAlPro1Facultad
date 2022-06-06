@@ -128,6 +128,11 @@ class Game:
             if not ev:
                 break
 
+            while ev.type == gamelib.EventType.Motion:
+                ev = gamelib.wait()
+                if not ev:
+                    return
+
             if ev.type == gamelib.EventType.ButtonPress and ev.mouse_button == 1: #El usuario apreto el click izquierdo
                 columna, fila = juego.de_click_a_diccionario(ev.x, ev.y)
                 if columna == None and fila == None: #El usuario hizo click fuera del tablero. Si esto paso, ignoramos este click
@@ -146,6 +151,7 @@ class Game:
 
                 elif ev.key == TECLA_PARA_CERRAR_JUEGO:
                     break
+            print("deez")
 
 juego = Game(1, "SHAPE SHIFTER CHESS",ANCHO_VENTANA, ALTO_VENTANA + ESPACIO_MENSAJE )
 gamelib.init(juego.main)
