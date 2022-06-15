@@ -20,7 +20,7 @@ class Flood:
 
         for y in range(self.alto):
             for x in range(self.ancho):
-                self.tablero[y,x] = 0
+                self.tablero[x,y] = 0
 
     def mezclar_tablero(self, n_colores):
         """
@@ -77,7 +77,20 @@ class Flood:
         return self.alto, self.ancho
 
 
+    def moverse(self):
+        '''
+        Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
+        '''
+        for i in range(3) #Son 3 direcciones posibles
+    
+
     def cambiar_color(self, color_nuevo):
+
+        coordenadas_visitadas = set()
+        color_actual = self.obtener_posibles_colores(0,0)
+
+
+
         """
         Asigna el nuevo color al Flood de la grilla. Es decir, a todas las
         coordenadas que formen un camino continuo del mismo color comenzando
