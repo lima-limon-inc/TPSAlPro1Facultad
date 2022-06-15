@@ -11,7 +11,7 @@ N_COLORES = 5
 # Constantes de visuales
 TAM_CELDA = 35
 ANCHO_LINEA = 2
-MOSTRAR_NUMEROS = False  # útil activarlo por si no son claros los diferentes colores
+MOSTRAR_NUMEROS = True  # útil activarlo por si no son claros los diferentes colores
 
 MARGEN = 20
 

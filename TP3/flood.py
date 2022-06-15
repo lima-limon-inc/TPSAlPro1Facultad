@@ -7,6 +7,8 @@ class Flood:
     """
 
     def __init__(self, alto, ancho):
+        self.alto = alto
+        self.ancho = ancho
         """
         Genera un nuevo Flood de un mismo color con las dimensiones dadas.
 
@@ -14,8 +16,11 @@ class Flood:
             alto, ancho (int): Tamaño de la grilla.
         """
         # Parte 1: Cambiar el `raise` por tu código...
-        raise NotImplementedError()
+        self.tablero = {}
 
+        for y in range(self.alto):
+            for x in range(self.ancho):
+                self.tablero[y,x] = 0
 
     def mezclar_tablero(self, n_colores):
         """
@@ -26,7 +31,12 @@ class Flood:
             n_colores (int): Cantidad maxima de colores a incluir en la grilla.
         """
         # Parte 1: Cambiar el `raise` por tu código...
-        raise NotImplementedError()
+        self.n_colores = n_colores #Me guardo la cantidad de colores
+
+        for y in range(self.alto):
+            for x in range(self.ancho):
+                self.tablero[x,y] = random.randint(0, n_colores - 1)
+
 
 
     def obtener_color(self, fil, col):
@@ -40,7 +50,7 @@ class Flood:
             Color asignado.
         """
         # Parte 1: Cambiar el `raise` por tu código...
-        raise NotImplementedError()
+        return self.tablero[(col,fil)]
 
 
     def obtener_posibles_colores(self):
@@ -54,8 +64,7 @@ class Flood:
             iterable: secuencia ordenada de colores.
         """
         # Parte 1: Cambiar el `raise` por tu código...
-        raise NotImplementedError()
-
+        return [i for i in range(self.n_colores)]
 
     def dimensiones(self):
         """
@@ -65,7 +74,7 @@ class Flood:
             (int, int): alto y ancho de la grilla en ese orden.
         """
         # Parte 1: Cambiar el `raise` por tu código...
-        raise NotImplementedError()
+        return self.alto, self.ancho
 
 
     def cambiar_color(self, color_nuevo):
