@@ -22,6 +22,13 @@ class Flood:
             for x in range(self.ancho):
                 self.tablero[x,y] = 0
 
+        self.direcciones = {
+                (0,1), #Abajo
+                (0,-1),#Arriba
+                (1,0), #Derecha
+                (-1,0),#Izquierda
+                }
+
     def mezclar_tablero(self, n_colores):
         """
         Asigna de forma completamente aleatoria hasta `n_colores` a lo largo de
@@ -50,7 +57,7 @@ class Flood:
             Color asignado.
         """
         # Parte 1: Cambiar el `raise` por tu código...
-        return self.tablero[(col,fil)]
+        return self.tablero.get((col,fil), -1) # El -1 funciona de centinela. Si el color es igual a -1, significa que estamos fuera de la tabla
 
 
     def obtener_posibles_colores(self):
@@ -77,17 +84,40 @@ class Flood:
         return self.alto, self.ancho
 
 
-    def moverse(self):
+    def moverse(self, desde, hasta, color_actual, color_nuevo):
+
+
+        if self.obtener_color(hasta[1], hasta[0]) != color_actual or self.obtener_color(hasta[0], hasta[1]) == -1: #Caso base
+            return
+
+
+        self.tablero[desde[0], desde[1]] = color_nuevo
+
+        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
+
+        a_donde_voy = self.direcciones - de_donde_vengo
+
+        for tupla in a_donde_voy:
+            self.moverse(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color_actual, color_nuevo)
+
+
+
         '''
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
-        for i in range(3) #Son 3 direcciones posibles
-    
 
     def cambiar_color(self, color_nuevo):
 
-        coordenadas_visitadas = set()
-        color_actual = self.obtener_posibles_colores(0,0)
+        print(color_nuevo)
+
+        color_actual = self.obtener_color(0,0)
+
+        print(color_actual)
+
+        self.tablero[0, 0] = color_nuevo
+
+        self.moverse((0,0),(1,0), color_actual, color_nuevo) 
+        self.moverse((0,0),(0,1), color_actual, color_nuevo) 
 
 
 
