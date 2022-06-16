@@ -46,7 +46,7 @@ class Flood:
 
 
 
-    def obtener_color(self, fil, col):
+    def obtener_color(self, col, fil):
         """
         Devuelve el color que se encuentra en las coordenadas solicitadas.
 
@@ -85,13 +85,10 @@ class Flood:
 
 
     def moverse(self, desde, hasta, color_actual, color_nuevo):
-
-
-        if self.obtener_color(hasta[1], hasta[0]) != color_actual or self.obtener_color(hasta[0], hasta[1]) == -1: #Caso base
+        if self.tablero[hasta] != color_actual or self.tablero[hasta] == -1:
             return
-
-
-        self.tablero[desde[0], desde[1]] = color_nuevo
+        
+        self.tablero[hasta] = color_nuevo
 
         de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
 

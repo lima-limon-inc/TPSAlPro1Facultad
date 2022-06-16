@@ -118,8 +118,8 @@ class JuegoFlood:
         return self.flood.dimensiones()
 
 
-    def obtener_color(self, fil, col):
-        return self.flood.obtener_color(fil, col)
+    def obtener_color(self, col, fil):
+        return self.flood.obtener_color(col, fil)
 
 
     def obtener_posibles_colores(self):

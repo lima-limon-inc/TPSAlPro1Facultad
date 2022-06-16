@@ -48,8 +48,8 @@ def manejar_click(juego, x, y):
 
     if 0 <= fil < alto and 0 <= col < ancho:
         color = juego.obtener_color(
-            (y - MARGEN) // TAM_CELDA,
             (x - MARGEN) // TAM_CELDA
+            (y - MARGEN) // TAM_CELDA,
         )
         juego.cambiar_color(color)
 
@@ -77,7 +77,7 @@ def juego_mostrar_grilla(juego):
     # Muestra los cuadrados de colores
     for f in range(alto):
         for c in range(ancho):
-            color = juego.obtener_color(f, c)
+            color = juego.obtener_color(c, f)
             i = list(juego.obtener_posibles_colores()).index(color)
             gamelib.draw_rectangle(
                 c * TAM_CELDA + MARGEN,
@@ -100,7 +100,7 @@ def juego_mostrar_grilla(juego):
     # Muestra las líneas "divisoras"
     for f in range(alto):
         for c in range(ancho):
-            color = juego.obtener_color(f, c)
+            color = juego.obtener_color(c, f)
             if MOSTRAR_NUMEROS:
                 gamelib.draw_text(
                     str(color),
@@ -111,7 +111,7 @@ def juego_mostrar_grilla(juego):
                     anchor='center',
                     size=TAM_CELDA // 2
                 )
-            if f + 1 < alto and juego.obtener_color(f + 1, c) != color:
+            if f + 1 < alto and juego.obtener_color(c, f + 1) != color:
                 gamelib.draw_line(
                     c * TAM_CELDA - ANCHO_LINEA / 2 + MARGEN,
                     (f + 1) * TAM_CELDA + MARGEN,
@@ -120,7 +120,7 @@ def juego_mostrar_grilla(juego):
                     fill='black',
                     width=ANCHO_LINEA
                 )
-            if c + 1 < ancho and juego.obtener_color(f, c + 1) != color:
+            if c + 1 < ancho and juego.obtener_color(c + 1, f) != color:
                 gamelib.draw_line(
                     (c + 1) * TAM_CELDA + MARGEN,
                     f * TAM_CELDA - ANCHO_LINEA / 2 + MARGEN,
