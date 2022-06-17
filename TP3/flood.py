@@ -113,7 +113,7 @@ class Flood:
 
         color_actual = self.obtener_color(0,0)
         if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos None --> "Los salteamos"
-            return
+            return "Ignorar"
 
         self.tablero[0, 0] = color_nuevo
 
@@ -136,7 +136,6 @@ class Flood:
             color_nuevo: Valor del nuevo color a asignar al Flood.
         """
         # Parte 2: Tu código acá...
-        return
 
 
     def clonar(self):

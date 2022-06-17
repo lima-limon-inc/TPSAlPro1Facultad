@@ -38,8 +38,9 @@ class JuegoFlood:
         # Parte 3: Modificar el código...
 
 
+        if self.flood.cambiar_color(color) == "Ignorar":
+            return
         self.n_movimientos += 1
-        self.flood.cambiar_color(color)
 
 
         if not self.pasos_solucion.esta_vacia() and self.pasos_solucion.ver_frente() == color:
