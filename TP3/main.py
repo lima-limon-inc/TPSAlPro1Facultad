@@ -48,8 +48,8 @@ def manejar_click(juego, x, y):
 
     if 0 <= fil < alto and 0 <= col < ancho:
         color = juego.obtener_color(
-            (x - MARGEN) // TAM_CELDA
-            (y - MARGEN) // TAM_CELDA,
+            (x - MARGEN) // TAM_CELDA,
+            (y - MARGEN) // TAM_CELDA
         )
         juego.cambiar_color(color)
 
