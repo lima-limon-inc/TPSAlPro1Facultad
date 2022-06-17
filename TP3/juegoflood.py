@@ -24,6 +24,7 @@ class JuegoFlood:
         self.pasos_solucion = Cola()
 
         # Parte 3: Agregar atributos a la clase...
+        self.pila_rehacer = Pila()
 
 
     def cambiar_color(self, color):
@@ -60,6 +61,10 @@ class JuegoFlood:
             return
 
         paso_anterior = self.flood.historial_movimientos.desapilar()
+
+        self.pila_rehacer.apilar({"Coordenadas":paso_anterior["Coordenadas"], "Color":self.flood.obtener_color(0,0)})
+        print(f"{self.pila_rehacer.ver_tope()} rehacer")
+
         for coordenada in paso_anterior["Coordenadas"]:
             self.flood.tablero[coordenada] = paso_anterior["Color"]
 
@@ -76,8 +81,16 @@ class JuegoFlood:
         estructuras para deshacer y rehacer.
         """
         # Parte 3: cambiar el `return` por tu código...
-        return
+        if self.pila_rehacer.esta_vacia():
+            print("VACIA VACIA")
+            return
 
+        paso_siguiente = self.pila_rehacer.desapilar()
+
+        self.flood.historial_movimientos.apilar({"Coordenadas":paso_siguiente["Coordenadas"], "Color":self.flood.obtener_color(0,0)})
+
+        for coordenada in paso_siguiente["Coordenadas"]:
+            self.flood.tablero[coordenada] = paso_siguiente["Color"]
 
         self.n_movimientos += 1
         self.pasos_solucion = Cola()
