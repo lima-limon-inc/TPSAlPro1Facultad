@@ -29,8 +29,8 @@ class Flood:
                 (-1,0),#Izquierda
                 }
 
-        self.test = [ (0,0) ]
-        self.pila = Pila()
+        self.coordenadas_cambiadas = [ (0,0) ]
+        self.historial_movimientos = Pila()
 
     def mezclar_tablero(self, n_colores):
         """
@@ -94,7 +94,7 @@ class Flood:
         self.tablero[hasta] = color_nuevo
         print(hasta)
         print()
-        self.test.append(hasta)
+        self.coordenadas_cambiadas.append(hasta)
 
 
         de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
@@ -121,10 +121,10 @@ class Flood:
         self.moverse((0,0),(0,1), color_actual, color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
                                                              # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
-        self.pila.apilar({"Coordenadas":set(self.test), "Color":color_actual})
-        print(f"DEBUG: {self.test}")
-        print(f"{self.pila.ver_tope()}")
-        self.test = [ (0,0) ]
+        self.historial_movimientos.apilar({"Coordenadas":set(self.coordenadas_cambiadas), "Color":color_actual})
+        print(f"DEBUG: {self.coordenadas_cambiadas}")
+        print(f"{self.historial_movimientos.ver_tope()}")
+        self.coordenadas_cambiadas = [ (0,0) ]
 
 
         """

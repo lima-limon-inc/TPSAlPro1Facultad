@@ -54,7 +54,11 @@ class JuegoFlood:
         """
         # Parte 3: cambiar el `return` por tu código...
 
-        paso_anterior = self.flood.pila.desapilar()
+        if self.flood.historial_movimientos.esta_vacia():
+            print("VACIA VACIA")
+            return
+
+        paso_anterior = self.flood.historial_movimientos.desapilar()
         for coordenada in paso_anterior["Coordenadas"]:
             self.flood.tablero[coordenada] = paso_anterior["Color"]
 
