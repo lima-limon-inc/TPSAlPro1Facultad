@@ -104,9 +104,6 @@ class Flood:
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
 
-    def _cambiar_color(self, color_nuevo):
-        
-
     def cambiar_color(self, color_nuevo):
 
         color_actual = self.obtener_color(0,0)
