@@ -29,6 +29,7 @@ class Flood:
                 (-1,0),#Izquierda
                 }
 
+
     def mezclar_tablero(self, n_colores):
         """
         Asigna de forma completamente aleatoria hasta `n_colores` a lo largo de
@@ -102,6 +103,9 @@ class Flood:
         '''
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
+
+    def _cambiar_color(self, color_nuevo):
+        
 
     def cambiar_color(self, color_nuevo):
 
