@@ -94,7 +94,6 @@ class Flood:
         self.tablero[hasta] = color_nuevo
         self.coordenadas_cambiadas.append(hasta)
 
-
         de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
 
         a_donde_voy = self.direcciones - de_donde_vengo
@@ -120,7 +119,6 @@ class Flood:
                                                              # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
         self.historial_movimientos.apilar({"Coordenadas":set(self.coordenadas_cambiadas), "Color":color_actual})
-        print(f"{self.historial_movimientos.ver_tope()}")
         self.coordenadas_cambiadas = [ (0,0) ]
 
 

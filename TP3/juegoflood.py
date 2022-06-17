@@ -43,6 +43,8 @@ class JuegoFlood:
             return
         self.n_movimientos += 1
 
+        self.pila_rehacer = Pila() #Si el usuario selecciona un espacio nuevo, pierde la posibilidad de rehacer
+
 
         if not self.pasos_solucion.esta_vacia() and self.pasos_solucion.ver_frente() == color:
             self.pasos_solucion.desencolar()
@@ -57,19 +59,14 @@ class JuegoFlood:
         # Parte 3: cambiar el `return` por tu código...
 
         if self.flood.historial_movimientos.esta_vacia():
-            print("VACIA VACIA")
             return
 
         paso_anterior = self.flood.historial_movimientos.desapilar()
 
         self.pila_rehacer.apilar({"Coordenadas":paso_anterior["Coordenadas"], "Color":self.flood.obtener_color(0,0)})
-        print(f"{self.pila_rehacer.ver_tope()} rehacer")
 
         for coordenada in paso_anterior["Coordenadas"]:
             self.flood.tablero[coordenada] = paso_anterior["Color"]
-
-
-
 
         self.n_movimientos -= 1
         self.pasos_solucion = Cola()
@@ -82,7 +79,6 @@ class JuegoFlood:
         """
         # Parte 3: cambiar el `return` por tu código...
         if self.pila_rehacer.esta_vacia():
-            print("VACIA VACIA")
             return
 
         paso_siguiente = self.pila_rehacer.desapilar()
