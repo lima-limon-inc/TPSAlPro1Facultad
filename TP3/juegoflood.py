@@ -53,7 +53,12 @@ class JuegoFlood:
         manejando las estructuras para deshacer y rehacer.
         """
         # Parte 3: cambiar el `return` por tu código...
-        return
+
+        paso_anterior = self.flood.pila.desapilar()
+        for coordenada in paso_anterior["Coordenadas"]:
+            self.flood.tablero[coordenada] = paso_anterior["Color"]
+
+
 
 
         self.n_movimientos -= 1
