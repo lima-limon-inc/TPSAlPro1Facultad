@@ -30,9 +30,8 @@ class Flood:
                 }
 
         self.coordenadas_cambiadas = [ (0,0) ]
+        self.historial_movimientos = Pila()
 
-        self.pila_deshacer = Pila()
-        self.pila_rehacer = Pila()
     def mezclar_tablero(self, n_colores):
         """
         Asigna de forma completamente aleatoria hasta `n_colores` a lo largo de
@@ -115,7 +114,7 @@ class Flood:
         self.moverse((0,0),(0,1), color_actual, color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
                                                              # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
-        self.pila_deshacer.apilar({"Coordenadas":set(self.coordenadas_cambiadas), "Color":color_actual})
+        self.historial_movimientos.apilar({"Coordenadas":set(self.coordenadas_cambiadas), "Color":color_actual})
         self.coordenadas_cambiadas = [ (0,0) ]
 
 
