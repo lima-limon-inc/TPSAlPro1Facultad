@@ -149,5 +149,13 @@ class Flood:
         Devuelve:
             bool: True si toda la grilla tiene el mismo color
         """
-        # Parte 4: Tu código acá...
-        return False
+
+        color_actual = self.obtener_color(0,0)
+
+
+        for x in range(self.dimensiones()[1] - 1, -1, -1):                #Como el tablero va evoluciando de la esquina de arriba a la izquierda hacia el resto del tablero;
+            for y in range(self.dimensiones()[0] - 1, -1, -1):            #empezamos a chequear desde la esquina de abajo a la derecha, ya que es mas probable encontrar uno diferente desde ahi.
+                if self.obtener_color(x,y) != self.obtener_color(0,0):    #Solo hace falta chequear que sean iguales al 0,0; si son diferentes, significa que el tablero no es de un solo color.
+                    return False
+        return True
+
