@@ -18,6 +18,7 @@ class JuegoFlood:
             n_colores: Cantidad maxima de colores a incluir en la grilla.
         """
         self.flood = Flood(alto, ancho)
+        self.n_colores = n_colores
         self.flood.mezclar_tablero(n_colores)
         self.mejor_n_movimientos, _ = self._calcular_movimientos()
         self.n_movimientos = 0
@@ -92,6 +93,12 @@ class JuegoFlood:
 
     def _calcular_movimientos(self):
         sucesion_de_pasos = Cola()
+        while not self.flood.esta_completado():
+            for i in range(self.n_colores):
+                self.flood.cambiar_color(i)
+                tamano = self.flood.chequear_tamano_flood()
+
+
 
 
 

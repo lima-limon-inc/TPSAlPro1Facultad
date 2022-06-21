@@ -142,12 +142,17 @@ class Flood:
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
 
-    def chequear_tamano_flood(self, color):
+    def chequear_tamano_flood(self):
+        color = self.obtener_color(0,0)
+
         self._chequear_tamano_flood((0,0),(1,0), color) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self._chequear_tamano_flood((0,0),(0,1), color) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
        #print(self.coordenadas_visitadas)
        #print(len(self.coordenadas_visitadas))
+        tamano = len(self.coordenadas_visitadas)
         self.coordenadas_visitadas = { (0,0) }
+
+        return tamano
 
     def clonar(self):
         """
