@@ -124,8 +124,8 @@ class Flood:
     def chequear_tamano_flood(self, color_nuevo):
         self.moverse2((0,0),(1,0), color_nuevo) # La funcion moverse toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self.moverse2((0,0),(0,1), color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
-        print(self.coordenadas_visitadas)
-        print(len(self.coordenadas_visitadas))
+       #print(self.coordenadas_visitadas)
+       #print(len(self.coordenadas_visitadas))
         self.coordenadas_visitadas = { (0,0) }
 
 
@@ -144,7 +144,7 @@ class Flood:
         self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual})
         self.coordenadas_cambiadas = { (0,0) }
 
-        self.chequear_tamano_flood(color_nuevo)
+#       self.chequear_tamano_flood(color_nuevo)
         """
         Asigna el nuevo color al Flood de la grilla. Es decir, a todas las
         coordenadas que formen un camino continuo del mismo color comenzando
@@ -172,7 +172,6 @@ class Flood:
         """
 
         color_actual = self.obtener_color(0,0)
-
 
         for x in range(self.dimensiones()[1] - 1, -1, -1):                #Como el tablero va evoluciando de la esquina de arriba a la izquierda hacia el resto del tablero;
             for y in range(self.dimensiones()[0] - 1, -1, -1):            #empezamos a chequear desde la esquina de abajo a la derecha, ya que es mas probable encontrar uno diferente desde ahi.
