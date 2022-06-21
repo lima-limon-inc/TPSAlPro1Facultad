@@ -109,7 +109,7 @@ class Flood:
         if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos None --> "Los salteamos"
             return "Ignorar"
 
-        self.tablero[0, 0] = color_nuevo
+        self.tablero[(0, 0)] = color_nuevo
 
         self.moverse((0,0),(1,0), color_actual, color_nuevo) # La funcion moverse toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self.moverse((0,0),(0,1), color_actual, color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
