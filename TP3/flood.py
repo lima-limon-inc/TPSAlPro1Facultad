@@ -29,7 +29,7 @@ class Flood:
                 (-1,0),#Izquierda
                 }
 
-        self.coordenadas_cambiadas = [ (0,0) ]
+        self.coordenadas_cambiadas = { (0,0) }
 
         self.pila_deshacer = Pila()
         self.pila_rehacer = Pila()
@@ -89,7 +89,7 @@ class Flood:
             return
 
         self.tablero[hasta] = color_nuevo
-        self.coordenadas_cambiadas.append(hasta)
+        self.coordenadas_cambiadas.add(hasta)
 
         de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
 
@@ -115,8 +115,8 @@ class Flood:
         self.moverse((0,0),(0,1), color_actual, color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
                                                              # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
-        self.pila_deshacer.apilar({"Coordenadas":set(self.coordenadas_cambiadas), "Color":color_actual})
-        self.coordenadas_cambiadas = [ (0,0) ]
+        self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual})
+        self.coordenadas_cambiadas = { (0,0) }
 
 
         """
