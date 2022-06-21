@@ -1,13 +1,20 @@
 import random
 from pila import Pila
 
+DIRECCIONES = {             #Conjunto que representa las direcciones a las que una celda puede ser adyacente. USandfo cuando se calcula a que celda ir siguiente. Se toma como (0,0) la esquina izquierda superior, de ahi que bajar aumenta las "y" y subir las resta; y que ir a la derecha aumenta las "x" e ir a la izquierda las disminuye
+        (0,1), #Abajo
+        (0,-1),#Arriba
+        (1,0), #Derecha
+        (-1,0),#Izquierda
+        }
+
 class Flood:
     """
     Clase para administrar un tablero de N colores.
     """
 
     def __init__(self, alto, ancho):
-        self.alto = alto
+        self.alto = alto    #Me guardo el tamano del flood por separado
         self.ancho = ancho
         """
         Genera un nuevo Flood de un mismo color con las dimensiones dadas.
@@ -15,21 +22,15 @@ class Flood:
         Argumentos:
             alto, ancho (int): Tamaño de la grilla.
         """
-        # Parte 1: Cambiar el `raise` por tu código...
-        self.tablero = {}
+        self.tablero = {} #Creo el diccionario que voy a usar como tablero
 
         for y in range(self.alto):
             for x in range(self.ancho):
-                self.tablero[x,y] = 0
+                self.tablero[x,y] = 0 #Anado todos los valores (empiezan todos pintados de 0)
 
-        self.direcciones = {
-                (0,1), #Abajo
-                (0,-1),#Arriba
-                (1,0), #Derecha
-                (-1,0),#Izquierda
-                }
 
-        self.coordenadas_cambiadas = { (0,0) }
+        self.coordenadas_cambiadas = { (0,0) } #Representa las coordenadas que son cambiadas cuando se llama a .cambiar_color()
+        self.coordenadas_visitadas = { (0,0) } #Representa las coordenadas que son visitadas cuando se llama a chequear_tamano_flood()
 
         self.pila_deshacer = Pila()
         self.pila_rehacer = Pila()
@@ -84,40 +85,43 @@ class Flood:
         # Parte 1: Cambiar el `raise` por tu código...
         return self.alto, self.ancho
 
-    def moverse(self, desde, hasta, color_actual, color_nuevo):
-        if self.obtener_color(hasta[0], hasta[1]) != color_actual:
+    def _cambiar_color(self, desde, hasta, color_actual, color_nuevo):
+        if self.obtener_color(hasta[0], hasta[1]) != color_actual: #Si la celda a la que llegamos tiene un color diferente a color_actual, significa que no es parte del flood, asique no nos interesa
             return
 
-        self.tablero[hasta] = color_nuevo
-        self.coordenadas_cambiadas.add(hasta)
+        self.tablero[hasta] = color_nuevo     #En este paso se pinta la celda al nuevo color
+        self.coordenadas_cambiadas.add(hasta) #Dicha celda se guarda, para luego ser almacenada en la pila de deshacer
 
-        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
+        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))} #Esto calculo cual fue la celda que nos trajo a la celda en la que estamos, dicha celda ya fue pintada, asique no hace falta ir hacia ella
 
-        a_donde_voy = self.direcciones - de_donde_vengo
+        a_donde_voy = DIRECCIONES - de_donde_vengo #La interseccion entre estos dos conjuntos nos da las 3 direcciones a las que tenemos que ir a continuacion
 
         for tupla in a_donde_voy:
-            self.moverse(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color_actual, color_nuevo)
+            self._cambiar_color(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color_actual, color_nuevo)
 
 
         '''
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
-
     def cambiar_color(self, color_nuevo):
-
-        color_actual = self.obtener_color(0,0)
-        if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos None --> "Los salteamos"
+        color_actual = self.obtener_color(0,0) #Guardamos el valor de la celda (0,0) antes de pintarla
+        if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos "Ignorar" --> "Los salteamos" (No se devuelve None, ya que genera conflictos con la funcion main.py de Diego)
             return "Ignorar"
 
+<<<<<<< HEAD
         self.tablero[(0, 0)] = color_nuevo
 
         self.moverse((0,0),(1,0), color_actual, color_nuevo) # La funcion moverse toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self.moverse((0,0),(0,1), color_actual, color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
+=======
+        self.tablero[(0, 0)] = color_nuevo #Pintamos la primera coordenada por separado, ya que la recursion empieza desde la primera y va a las siguientes celdas
+        self._cambiar_color((0,0),(1,0), color_actual, color_nuevo) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
+        self._cambiar_color((0,0),(0,1), color_actual, color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
+>>>>>>> TamanoFlood
                                                              # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
-        self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual})
-        self.coordenadas_cambiadas = { (0,0) }
-
+        self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual}) #En la pila de deshacer, guardamos todas las celdas que fueron cambiadas de color con el color que tenian previamente; en vez de una copia de todo el tablero.
+        self.coordenadas_cambiadas = { (0,0) } #Reseteamos los valores cambiados, como (0,0) lo cambiamos fuera de la recursion por lo explicado previamente, ya lo guardamos para la proxima recursion
 
         """
         Asigna el nuevo color al Flood de la grilla. Es decir, a todas las
@@ -128,6 +132,29 @@ class Flood:
             color_nuevo: Valor del nuevo color a asignar al Flood.
         """
         # Parte 2: Tu código acá...
+
+    def _chequear_tamano_flood(self, desde, hasta, color):
+        if self.obtener_color(hasta[0], hasta[1]) != color or hasta in self.coordenadas_visitadas: #Ignoramos las celdas ya visitadas o que tienen otro color al color que pasamos
+            return
+
+        self.coordenadas_visitadas.add(hasta) #Lo anadimos a las coordenadas visitadas
+
+        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))} #Esto calculo cual fue la celda que nos trajo a la celda en la que estamos, dicha celda ya fue pintada, asique no hace falta ir hacia ella
+
+        a_donde_voy = DIRECCIONES - de_donde_vengo #La interseccion entre estos dos conjuntos nos da las 3 direcciones a las que tenemos que ir a continuacion
+
+        for tupla in a_donde_voy:
+            self._chequear_tamano_flood(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color)
+        '''
+        Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
+        '''
+
+    def chequear_tamano_flood(self, color):
+        self._chequear_tamano_flood((0,0),(1,0), color) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
+        self._chequear_tamano_flood((0,0),(0,1), color) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
+       #print(self.coordenadas_visitadas)
+       #print(len(self.coordenadas_visitadas))
+        self.coordenadas_visitadas = { (0,0) }
 
     def clonar(self):
         """
@@ -146,7 +173,6 @@ class Flood:
         """
 
         color_actual = self.obtener_color(0,0)
-
 
         for x in range(self.dimensiones()[1] - 1, -1, -1):                #Como el tablero va evoluciando de la esquina de arriba a la izquierda hacia el resto del tablero;
             for y in range(self.dimensiones()[0] - 1, -1, -1):            #empezamos a chequear desde la esquina de abajo a la derecha, ya que es mas probable encontrar uno diferente desde ahi.

@@ -91,6 +91,11 @@ class JuegoFlood:
 
 
     def _calcular_movimientos(self):
+        sucesion_de_pasos = Cola()
+
+
+
+
         """
         Realiza una solución de pasos contra el Flood actual (en una Cola)
         y devuelve la cantidad de movimientos que llevó a esa solución.
