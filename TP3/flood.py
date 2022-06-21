@@ -30,6 +30,8 @@ class Flood:
                 }
 
         self.coordenadas_cambiadas = { (0,0) }
+        self.tamano_flood = 1
+        self.coordenadas_visitadas = { (0,0) }
 
         self.pila_deshacer = Pila()
         self.pila_rehacer = Pila()
@@ -103,6 +105,30 @@ class Flood:
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
 
+    def moverse2(self, desde, hasta, color_nuevo):
+        if self.obtener_color(hasta[0], hasta[1]) != color_nuevo or hasta in self.coordenadas_visitadas:
+            return
+
+        self.coordenadas_visitadas.add(hasta)
+
+        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))}
+
+        a_donde_voy = self.direcciones - de_donde_vengo
+
+        for tupla in a_donde_voy:
+            self.moverse2(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color_nuevo)
+        '''
+        Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
+        '''
+
+    def chequear_tamano_flood(self, color_nuevo):
+        self.moverse2((0,0),(1,0), color_nuevo) # La funcion moverse toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
+        self.moverse2((0,0),(0,1), color_nuevo) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
+        print(self.coordenadas_visitadas)
+        print(len(self.coordenadas_visitadas))
+        self.coordenadas_visitadas = { (0,0) }
+
+
     def cambiar_color(self, color_nuevo):
 
         color_actual = self.obtener_color(0,0)
@@ -118,7 +144,7 @@ class Flood:
         self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual})
         self.coordenadas_cambiadas = { (0,0) }
 
-
+        self.chequear_tamano_flood(color_nuevo)
         """
         Asigna el nuevo color al Flood de la grilla. Es decir, a todas las
         coordenadas que formen un camino continuo del mismo color comenzando
