@@ -20,8 +20,8 @@ class JuegoFlood:
         self.flood = Flood(alto, ancho)
         self.n_colores = n_colores
         self.flood.mezclar_tablero(n_colores)
-        self.mejor_n_movimientos, _ = self._calcular_movimientos()
         self.n_movimientos = 0
+        self.mejor_n_movimientos, _ = self._calcular_movimientos()
         self.pasos_solucion = Cola()
 
         # Parte 3: Agregar atributos a la clase...
@@ -38,7 +38,7 @@ class JuegoFlood:
         """
         # Parte 3: Modificar el código...
 
-        if self.flood.cambiar_color(color) == "Ignorar":
+        if self.flood.cambiar_color(color) == 0:
             return
         self.n_movimientos += 1
 
@@ -97,10 +97,13 @@ class JuegoFlood:
         casillas_por_paso = {}
         while not self.flood.esta_completado():
             for i in range(self.n_colores):
-                self.flood.cambiar_color(i)
-                tamano = self.flood.chequear_tamano_flood()
+                tamano = self.flood.cambiar_color(i)
+               #tamano = self.flood.chequear_tamano_flood()
                 casillas_por_paso[i] = tamano
                 self.deshacer()
+                print(i)
+                print(tamano)
+                input()
 
             mayor_crecimiento = (-1, 0)
 
@@ -109,6 +112,7 @@ class JuegoFlood:
                     mayor_crecimiento = (i, casillas_por_paso[i])
 
             sucesion_de_pasos.append(mayor_crecimiento[0])
+            self.flood.cambiar_color(sucesion_de_pasos[-1])
 
 
             print(sucesion_de_pasos)
