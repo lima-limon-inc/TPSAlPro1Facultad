@@ -21,8 +21,8 @@ class JuegoFlood:
         self.n_colores = n_colores
         self.flood.mezclar_tablero(n_colores)
         self.n_movimientos = 0
-        self.mejor_n_movimientos, _ = self._calcular_movimientos()
         self.pasos_solucion = Cola()
+        self.mejor_n_movimientos, _ = self._calcular_movimientos()
 
         # Parte 3: Agregar atributos a la clase...
 
@@ -95,28 +95,49 @@ class JuegoFlood:
        #sucesion_de_pasos = Cola()
         sucesion_de_pasos = []
         casillas_por_paso = {}
-        while not self.flood.esta_completado():
-            for i in range(self.n_colores):
-                self.flood.cambiar_color(i)
-                tamano = self.flood.chequear_tamano_flood()
-                casillas_por_paso[i] = tamano
-                self.deshacer()
-                print(i)
-                print(tamano)
-                input()
+       #while not self.flood.esta_completado():
+        for i in range(self.n_colores):
+            
+            self.cambiar_color(i)
+            tamano = self.flood.chequear_tamano_flood()
+            casillas_por_paso[i] = tamano
+            self.deshacer()
+            print(i)
+            print(tamano)
+            input()
 
-            mayor_crecimiento = (-1, 0)
+        mayor_crecimiento = (-1, 0)
 
-            for i in range(len(casillas_por_paso)):
-                if casillas_por_paso[i] > mayor_crecimiento[1]:
-                    mayor_crecimiento = (i, casillas_por_paso[i])
+        for i in range(len(casillas_por_paso)):
+            if casillas_por_paso[i] > mayor_crecimiento[1]:
+                mayor_crecimiento = (i, casillas_por_paso[i])
 
-            sucesion_de_pasos.append(mayor_crecimiento[0])
-            self.flood.cambiar_color(sucesion_de_pasos[-1])
+        sucesion_de_pasos.append(mayor_crecimiento[0])
+        self.cambiar_color(sucesion_de_pasos[-1])
 
+        print(sucesion_de_pasos)
 
-            print(sucesion_de_pasos)
+        for i in range(self.n_colores):
+            if i == self.cambiar_color(sucesion_de_pasos[-1]):
+                pass
+            self.cambiar_color(i)
+            tamano = self.flood.chequear_tamano_flood()
+            casillas_por_paso[i] = tamano
+            self.deshacer()
+            print(i)
+            print(tamano)
+            input()
 
+        mayor_crecimiento = (-1, 0)
+
+        for i in range(len(casillas_por_paso)):
+            if casillas_por_paso[i] > mayor_crecimiento[1]:
+                mayor_crecimiento = (i, casillas_por_paso[i])
+
+        sucesion_de_pasos.append(mayor_crecimiento[0])
+        self.cambiar_color(sucesion_de_pasos[-1])
+
+        print(sucesion_de_pasos)
 
 
 
