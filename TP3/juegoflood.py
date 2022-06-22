@@ -97,8 +97,8 @@ class JuegoFlood:
         casillas_por_paso = {}
         while not self.flood.esta_completado():
             for i in range(self.n_colores):
-                tamano = self.flood.cambiar_color(i)
-               #tamano = self.flood.chequear_tamano_flood()
+                self.flood.cambiar_color(i)
+                tamano = self.flood.chequear_tamano_flood()
                 casillas_por_paso[i] = tamano
                 self.deshacer()
                 print(i)
