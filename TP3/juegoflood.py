@@ -92,11 +92,29 @@ class JuegoFlood:
 
 
     def _calcular_movimientos(self):
-        sucesion_de_pasos = Cola()
+       #sucesion_de_pasos = Cola()
+        sucesion_de_pasos = []
+        casillas_por_paso = {}
         while not self.flood.esta_completado():
             for i in range(self.n_colores):
                 self.flood.cambiar_color(i)
                 tamano = self.flood.chequear_tamano_flood()
+                casillas_por_paso[i] = tamano
+                self.deshacer()
+
+            mayor_crecimiento = (-1, 0)
+
+            for i in range(len(casillas_por_paso)):
+                if casillas_por_paso[i] > mayor_crecimiento[1]:
+                    mayor_crecimiento = (i, casillas_por_paso[i])
+
+            sucesion_de_pasos.append(mayor_crecimiento[0])
+
+
+            print(sucesion_de_pasos)
+
+
+
 
 
 
@@ -114,6 +132,7 @@ class JuegoFlood:
             Cola: Pasos utilizados para llegar a dicha solución
         """
         # Parte 4: tu código acá...
+        return len(sucesion_de_pasos), Cola()
         return 999, Cola()
 
 
