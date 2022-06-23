@@ -114,6 +114,7 @@ class Flood:
                                                                     # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
         self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual}) #En la pila de deshacer, guardamos todas las celdas que fueron cambiadas de color con el color que tenian previamente; en vez de una copia de todo el tablero.
+        self.chequear_tamano_flood(color_nuevo)
         self.coordenadas_cambiadas = { (0,0) } #Reseteamos los valores cambiados, como (0,0) lo cambiamos fuera de la recursion por lo explicado previamente, ya lo guardamos para la proxima recursion
 
         """
@@ -146,7 +147,7 @@ class Flood:
         self._chequear_tamano_flood((0,0),(1,0), color) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self._chequear_tamano_flood((0,0),(0,1), color) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
        #print(self.coordenadas_visitadas)
-       #print(len(self.coordenadas_visitadas))
+        print(len(self.coordenadas_visitadas))
         self.coordenadas_visitadas = { (0,0) }
 
     def clonar(self):
