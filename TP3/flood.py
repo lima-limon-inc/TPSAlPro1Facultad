@@ -105,8 +105,6 @@ class Flood:
         '''
     def cambiar_color(self, color_nuevo):
         color_actual = self.obtener_color(0,0) #Guardamos el valor de la celda (0,0) antes de pintarla
-        print(f"CN: {color_nuevo}")
-        print(f"CA: {color_actual}")
         if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos "Ignorar" --> "Los salteamos" (No se devuelve None, ya que genera conflictos con la funcion main.py de Diego)
             return None
 
@@ -153,8 +151,6 @@ class Flood:
 
         self._chequear_tamano_flood((0,0),(1,0), color) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self._chequear_tamano_flood((0,0),(0,1), color) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
-       #print(self.coordenadas_visitadas)
-       #print(len(self.coordenadas_visitadas))
         tamano = len(self.coordenadas_visitadas)
         self.coordenadas_visitadas = { (0,0) }
 

@@ -93,38 +93,41 @@ class JuegoFlood:
 
 
     def _calcular_movimientos(self):
-       #sucesion_de_pasos = Cola()
-        sucesion_de_pasos = []
+        self.flood.pila_rehacer = Pila()
+        self.flood.pila_deshacer = Pila()
+
+        sucesion_de_pasos = Cola()
+        pasos_enlistados = []
         casillas_por_paso = {}
-       #while not self.flood.esta_completado():
-        for i in range(6):
+        while not self.flood.esta_completado():
             for i in range(self.n_colores):
-                if len(sucesion_de_pasos) > 0 and i == self.cambiar_color(sucesion_de_pasos[-1]):
+                if len(pasos_enlistados) > 0 and i == pasos_enlistados[-1]:
                     continue
-                print(i)
                 self.cambiar_color(i)
                 tamano = self.flood.chequear_tamano_flood()
                 casillas_por_paso[i] = tamano
                 self.deshacer()
-               #print(f"{i} : {tamano}")
-               #input()
 
             mayor_crecimiento = (-1, 0)
 
             for i in range(self.n_colores):
-               #print(i)
                 if casillas_por_paso[i] > mayor_crecimiento[1]:
                     mayor_crecimiento = (i, casillas_por_paso[i])
 
-            sucesion_de_pasos.append(mayor_crecimiento[0])
-           #print(mayor_crecimiento)
-
-            ultimo_valor = sucesion_de_pasos[-1]
+            pasos_enlistados.append(mayor_crecimiento[0])
+            ultimo_valor = pasos_enlistados[-1]
             self.cambiar_color(ultimo_valor)
 
-            print(sucesion_de_pasos)
+        cantidad_de_pasos = len(pasos_enlistados)
 
+        for valor in pasos_enlistados:
+            sucesion_de_pasos.encolar(valor)
 
+        while not self.flood.pila_deshacer.esta_vacia():
+            self.deshacer()
+
+        self.flood.pila_rehacer = Pila()
+        self.flood.pila_deshacer = Pila()
 
 
 
@@ -142,8 +145,7 @@ class JuegoFlood:
             Cola: Pasos utilizados para llegar a dicha solución
         """
         # Parte 4: tu código acá...
-        return len(sucesion_de_pasos), Cola()
-        return 999, Cola()
+        return cantidad_de_pasos, sucesion_de_pasos
 
 
     def hay_proximo_paso(self):
@@ -176,7 +178,6 @@ class JuegoFlood:
 
     def obtener_color(self, col, fil):
         return self.flood.obtener_color(col, fil)
-
 
     def obtener_posibles_colores(self):
         return self.flood.obtener_posibles_colores()
