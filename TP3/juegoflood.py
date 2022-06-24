@@ -128,11 +128,6 @@ class JuegoFlood:
         self.flood.pila_rehacer = Pila()
         self.flood.pila_deshacer = Pila()
 
-
-            maximo_crecimiento = max(casillas_por_paso)
-
-            sucesion_de_pasos.encolar(maximo_crecimiento)
-
         """
         Realiza una solución de pasos contra el Flood actual (en una Cola)
         y devuelve la cantidad de movimientos que llevó a esa solución.
