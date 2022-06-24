@@ -24,9 +24,6 @@ class JuegoFlood:
         self.pasos_solucion = Cola()
         self.mejor_n_movimientos, _ = self._calcular_movimientos()
 
-        # Parte 3: Agregar atributos a la clase...
-
-
     def cambiar_color(self, color):
         """
         Realiza la acción para seleccionar un color en el Flood, sumando a la
@@ -36,15 +33,11 @@ class JuegoFlood:
         Argumentos:
             color (int): Nuevo color a seleccionar
         """
-        # Parte 3: Modificar el código...
-
-        if self.flood.cambiar_color(color) == None:
-            print("ACA")
+        if self.flood.cambiar_color(color) == 0: #Si ninguna celda fue cambiada, no queremos que 'cuente' como una accion
             return
+
         self.n_movimientos += 1
-
         self.flood.pila_rehacer = Pila() #Si el usuario selecciona un espacio nuevo, pierde la posibilidad de rehacer
-
 
         if not self.pasos_solucion.esta_vacia() and self.pasos_solucion.ver_frente() == color:
             self.pasos_solucion.desencolar()
@@ -58,12 +51,12 @@ class JuegoFlood:
         """
         # Parte 3: cambiar el `return` por tu código...
 
-        if self.flood.pila_deshacer.esta_vacia():
+        if self.flood.pila_deshacer.esta_vacia(): #Si no hay nada en la pila de rehacer, lo ignoramos
             return
 
-        paso_anterior = self.flood.pila_deshacer.desapilar()
+        paso_anterior = self.flood.pila_deshacer.desapilar() #Nos guardamos los valores para la pila de rehacer
 
-        self.flood.pila_rehacer.apilar({"Coordenadas":paso_anterior["Coordenadas"], "Color":self.flood.obtener_color(0,0)})
+        self.flood.pila_rehacer.apilar({"Coordenadas":paso_anterior["Coordenadas"], "Color":self.flood.obtener_color(0,0)}) #Este diccionario representa las celdas con el color antes de que el usuario las cambie. Las coordenadas son las mismas que las de rehacer, lo unico que cambia es el color
 
         for coordenada in paso_anterior["Coordenadas"]:
             self.flood.tablero[coordenada] = paso_anterior["Color"]
@@ -83,7 +76,8 @@ class JuegoFlood:
 
         paso_siguiente = self.flood.pila_rehacer.desapilar()
 
-        self.flood.pila_deshacer.apilar({"Coordenadas":paso_siguiente["Coordenadas"], "Color":self.flood.obtener_color(0,0)})
+        self.flood.pila_deshacer.apilar({"Coordenadas":paso_siguiente["Coordenadas"], "Color":self.flood.obtener_color(0,0)}) #Este diccionario representa las celdas con el color al que habian sido cambiadas por el usuario. Las coordenadas son las mismas que las de rehacer, lo unico que cambia es el color
+
 
         for coordenada in paso_siguiente["Coordenadas"]:
             self.flood.tablero[coordenada] = paso_siguiente["Color"]
@@ -92,7 +86,11 @@ class JuegoFlood:
         self.pasos_solucion = Cola()
 
     def _calcular_movimientos(self):
-        self.flood.pila_rehacer = Pila()
+        '''
+        Para el algoritmo de calcular los movimientos decidi usar la heuristica de: "El color que más casilleros agregaría al flood actua". Para lograr esto, cambio el color del flood a cada uno de los colores disponibles, guardando cuantas celdas anadiria cada uno (despues de cada paso deshago el cambio para volver al estado a evaluar). Una vez hecho eso efectuo el color que implique la mayor cantidad de celdas.
+        Dicho proceso es repetido hasta que el tablero este completo.
+        '''
+        self.flood.pila_rehacer = Pila() #Reseteamos las pilas para que no generen problemas a la hora de buscar la solucion optima
         self.flood.pila_deshacer = Pila()
 
         sucesion_de_pasos = Cola()
@@ -125,20 +123,9 @@ class JuegoFlood:
         while not self.flood.pila_deshacer.esta_vacia():
             self.deshacer()
 
-        self.flood.pila_rehacer = Pila()
+        self.flood.pila_rehacer = Pila() #Volvemos a resetear las pilas para que el usuario no pueda acceder a las rtas
         self.flood.pila_deshacer = Pila()
 
-        """
-        Realiza una solución de pasos contra el Flood actual (en una Cola)
-        y devuelve la cantidad de movimientos que llevó a esa solución.
-
-        COMPLETAR CON EL CRITERIO DEL ALGORITMO DE SOLUCIÓN.
-
-        Devuelve:
-            int: Cantidad de movimientos que llevó a la solución encontrada.
-            Cola: Pasos utilizados para llegar a dicha solución
-        """
-        # Parte 4: tu código acá...
         return cantidad_de_pasos, sucesion_de_pasos
 
 
