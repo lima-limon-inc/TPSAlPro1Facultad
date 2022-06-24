@@ -20,9 +20,9 @@ class JuegoFlood:
         self.flood = Flood(alto, ancho)
         self.n_colores = n_colores
         self.flood.mezclar_tablero(n_colores)
-        self.mejor_n_movimientos, _ = self._calcular_movimientos()
         self.n_movimientos = 0
         self.pasos_solucion = Cola()
+        self.mejor_n_movimientos, _ = self._calcular_movimientos()
 
         # Parte 3: Agregar atributos a la clase...
 
@@ -38,7 +38,8 @@ class JuegoFlood:
         """
         # Parte 3: Modificar el código...
 
-        if self.flood.cambiar_color(color) == "Ignorar":
+        if self.flood.cambiar_color(color) == None:
+            print("ACA")
             return
         self.n_movimientos += 1
 
@@ -91,22 +92,59 @@ class JuegoFlood:
         self.pasos_solucion = Cola()
 
     def _calcular_movimientos(self):
-       sucesion_de_pasos = Cola()
-       casillas_por_paso = {}
-       while not self.flood.esta_completado():
-            for i in range(self.n_colores):  #Vamos a probar cada uno de los colores para ver cual es el que suma la mayor area.
-                if sucesion_de_pasos.esta_vacia() and i == self.cambiar_color(sucesion_de_pasos[-1]): #No puede haber dos pasos con el mismo numero, este if lo evita
+        self.flood.pila_rehacer = Pila()
+        self.flood.pila_deshacer = Pila()
+
+        sucesion_de_pasos = Cola()
+        pasos_enlistados = []
+        casillas_por_paso = {}
+        while not self.flood.esta_completado():
+            for i in range(self.n_colores): #Vamos a probar cada uno de los colores para ver cual es el que suma la mayor area.
+                if len(pasos_enlistados) > 0 and i == pasos_enlistados[-1]: #No puede haber dos pasos con el mismo numero, este if lo evita
                     continue
                 self.cambiar_color(i) # i representa el color
                 tamano = self.flood.chequear_tamano_flood() #Vemos el tamano que produjo dicho cambio
                 casillas_por_paso[i] = tamano
-                self.deshacer() #Deshacemos para volver al estado anterior
+                self.deshacer()#Deshacemos para volver al estado anterior
+
+            mayor_crecimiento = (-1, 0)
+
+            for i in range(self.n_colores):
+                if casillas_por_paso[i] > mayor_crecimiento[1]:
+                    mayor_crecimiento = (i, casillas_por_paso[i])
+
+            pasos_enlistados.append(mayor_crecimiento[0])
+            ultimo_valor = pasos_enlistados[-1]
+            self.cambiar_color(ultimo_valor)
+
+        cantidad_de_pasos = len(pasos_enlistados)
+
+        for valor in pasos_enlistados:
+            sucesion_de_pasos.encolar(valor)
+
+        while not self.flood.pila_deshacer.esta_vacia():
+            self.deshacer()
+
+        self.flood.pila_rehacer = Pila()
+        self.flood.pila_deshacer = Pila()
+
 
             maximo_crecimiento = max(casillas_por_paso)
 
             sucesion_de_pasos.encolar(maximo_crecimiento)
 
-            self.cambiar_color(maximo_crecimiento)
+        """
+        Realiza una solución de pasos contra el Flood actual (en una Cola)
+        y devuelve la cantidad de movimientos que llevó a esa solución.
+
+        COMPLETAR CON EL CRITERIO DEL ALGORITMO DE SOLUCIÓN.
+
+        Devuelve:
+            int: Cantidad de movimientos que llevó a la solución encontrada.
+            Cola: Pasos utilizados para llegar a dicha solución
+        """
+        # Parte 4: tu código acá...
+        return cantidad_de_pasos, sucesion_de_pasos
 
 
     def hay_proximo_paso(self):
@@ -139,7 +177,6 @@ class JuegoFlood:
 
     def obtener_color(self, col, fil):
         return self.flood.obtener_color(col, fil)
-
 
     def obtener_posibles_colores(self):
         return self.flood.obtener_posibles_colores()

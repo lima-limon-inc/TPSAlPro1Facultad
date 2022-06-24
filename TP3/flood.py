@@ -106,7 +106,7 @@ class Flood:
     def cambiar_color(self, color_nuevo):
         color_actual = self.obtener_color(0,0) #Guardamos el valor de la celda (0,0) antes de pintarla
         if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos "Ignorar" --> "Los salteamos" (No se devuelve None, ya que genera conflictos con la funcion main.py de Diego)
-            return "Ignorar"
+            return None
 
         self.tablero[(0, 0)] = color_nuevo #Pintamos la primera coordenada por separado, ya que la recursion empieza desde la primera y va a las siguientes celdas
         self._cambiar_color((0,0),(1,0), color_actual, color_nuevo) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
@@ -114,9 +114,12 @@ class Flood:
                                                                     # tablero como (0,-1); pero me parece mas "realista"/claro de esta manera
 
         self.pila_deshacer.apilar({"Coordenadas":self.coordenadas_cambiadas, "Color":color_actual}) #En la pila de deshacer, guardamos todas las celdas que fueron cambiadas de color con el color que tenian previamente; en vez de una copia de todo el tablero.
-        self.chequear_tamano_flood(color_nuevo)
-        self.coordenadas_cambiadas = { (0,0) } #Reseteamos los valores cambiados, como (0,0) lo cambiamos fuera de la recursion por lo explicado previamente, ya lo guardamos para la proxima recursion
 
+        cantidad_coordenadas_cambiadas = len(self.coordenadas_cambiadas)
+
+        self.coordenadas_cambiadas = { (0,0) } #Reseteamos los valores cambiados, como (0,0) lo cambiamos fuera de la recursion por lo explicado previamente, ya lo guardamos para la proxima recursion
+        
+        return cantidad_coordenadas_cambiadas
         """
         Asigna el nuevo color al Flood de la grilla. Es decir, a todas las
         coordenadas que formen un camino continuo del mismo color comenzando
@@ -143,12 +146,16 @@ class Flood:
         Si vengo de la derecha, no tengo que chequear la izquierda. Si vengo de arriba, no tengo que chequear abajo
         '''
 
-    def chequear_tamano_flood(self, color):
+    def chequear_tamano_flood(self):
+        color = self.obtener_color(0,0)
+
         self._chequear_tamano_flood((0,0),(1,0), color) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
         self._chequear_tamano_flood((0,0),(0,1), color) # las que le van a dar comienzo a la recursion. Se podria llamar una sola vez a la funcion si se tomase como lugar inicial una celda "fuera" del
-       #print(self.coordenadas_visitadas)
-        print(len(self.coordenadas_visitadas))
+
+        tamano = len(self.coordenadas_visitadas)
         self.coordenadas_visitadas = { (0,0) }
+
+        return tamano
 
     def clonar(self):
         """
