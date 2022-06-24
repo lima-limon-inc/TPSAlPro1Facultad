@@ -91,7 +91,7 @@ class JuegoFlood:
 
     def _calcular_movimientos(self):
        sucesion_de_pasos = Cola()
-        casillas_por_paso = {}
+       casillas_por_paso = {}
        while not self.flood.esta_completado():
             for i in range(self.n_colores):  #Vamos a probar cada uno de los colores para ver cual es el que suma la mayor area.
                 if len(sucesion_de_pasos) > 0 and i == self.cambiar_color(sucesion_de_pasos[-1]): #No puede haber dos pasos con el mismo numero, este if lo evita
@@ -101,38 +101,11 @@ class JuegoFlood:
                 casillas_por_paso[i] = tamano
                 self.deshacer() #Deshacemos para volver al estado anterior
 
-            mayor_crecimiento = (-1, 0)
-
-            for i in range(self.n_colores):
-               #print(i)
-                if casillas_por_paso[i] > mayor_crecimiento[1]:
-                    mayor_crecimiento = (i, casillas_por_paso[i])
-
             maximo_crecimiento = max(casillas_por_paso)
 
             sucesion_de_pasos.encolar(maximo_crecimiento)
-            sucesion_de_pasos.append(mayor_crecimiento[0])
-           #print(mayor_crecimiento)
 
-            ultimo_valor = sucesion_de_pasos[-1]
-            self.cambiar_color(ultimo_valor)
-
-            print(sucesion_de_pasos)
-
-
-
-        """
-        Realiza una solución de pasos contra el Flood actual (en una Cola)
-        y devuelve la cantidad de movimientos que llevó a esa solución.
-
-        COMPLETAR CON EL CRITERIO DEL ALGORITMO DE SOLUCIÓN.
-
-        Devuelve:
-            int: Cantidad de movimientos que llevó a la solución encontrada.
-            Cola: Pasos utilizados para llegar a dicha solución
-        """
-        # Parte 4: tu código acá...
-        return 999, Cola()
+            self.cambiar_color(maximo_crecimiento)
 
 
     def hay_proximo_paso(self):
