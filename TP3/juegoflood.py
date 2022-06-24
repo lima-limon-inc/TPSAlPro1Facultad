@@ -38,7 +38,8 @@ class JuegoFlood:
         """
         # Parte 3: Modificar el código...
 
-        if self.flood.cambiar_color(color) == 0:
+        if self.flood.cambiar_color(color) == None:
+            print("ACA")
             return
         self.n_movimientos += 1
 
@@ -96,26 +97,30 @@ class JuegoFlood:
         sucesion_de_pasos = []
         casillas_por_paso = {}
        #while not self.flood.esta_completado():
-        for i in range(5):
+        for i in range(6):
             for i in range(self.n_colores):
-                if len(sucesion_de_pasos) != 0 and i == self.cambiar_color(sucesion_de_pasos[-1]):
-                    pass
+                if len(sucesion_de_pasos) > 0 and i == self.cambiar_color(sucesion_de_pasos[-1]):
+                    continue
+                print(i)
                 self.cambiar_color(i)
                 tamano = self.flood.chequear_tamano_flood()
                 casillas_por_paso[i] = tamano
                 self.deshacer()
-                print(i)
-                print(tamano)
-                input()
+               #print(f"{i} : {tamano}")
+               #input()
 
             mayor_crecimiento = (-1, 0)
 
-            for i in range(len(casillas_por_paso)):
+            for i in range(self.n_colores):
+               #print(i)
                 if casillas_por_paso[i] > mayor_crecimiento[1]:
                     mayor_crecimiento = (i, casillas_por_paso[i])
 
             sucesion_de_pasos.append(mayor_crecimiento[0])
-            self.cambiar_color(sucesion_de_pasos[-1])
+           #print(mayor_crecimiento)
+
+            ultimo_valor = sucesion_de_pasos[-1]
+            self.cambiar_color(ultimo_valor)
 
             print(sucesion_de_pasos)
 

@@ -105,8 +105,10 @@ class Flood:
         '''
     def cambiar_color(self, color_nuevo):
         color_actual = self.obtener_color(0,0) #Guardamos el valor de la celda (0,0) antes de pintarla
+        print(f"CN: {color_nuevo}")
+        print(f"CA: {color_actual}")
         if color_actual == color_nuevo: #Si el color nuevo es igual al actual, entonces no hay nada que cambiar. En esos casos devolvemos "Ignorar" --> "Los salteamos" (No se devuelve None, ya que genera conflictos con la funcion main.py de Diego)
-            return 0
+            return None
 
         self.tablero[(0, 0)] = color_nuevo #Pintamos la primera coordenada por separado, ya que la recursion empieza desde la primera y va a las siguientes celdas
         self._cambiar_color((0,0),(1,0), color_actual, color_nuevo) # La funcion _cambiar_color toma como parametro la celda de partida, por eso es llamada dos veces (ya que (0,0) tiene dos celdas adyacentes, las cuales son
