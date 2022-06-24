@@ -42,7 +42,6 @@ class Flood:
         Argumentos:
             n_colores (int): Cantidad maxima de colores a incluir en la grilla.
         """
-        # Parte 1: Cambiar el `raise` por tu código...
         self.n_colores = n_colores #Me guardo la cantidad de colores
 
         for y in range(self.alto):
@@ -59,7 +58,6 @@ class Flood:
         Devuelve:
             Color asignado.
         """
-        # Parte 1: Cambiar el `raise` por tu código...
         return self.tablero.get((col,fil), -1) # El -1 funciona de centinela. Si el color es igual a -1, significa que estamos fuera de la tabla
 
     def obtener_posibles_colores(self):
@@ -72,7 +70,6 @@ class Flood:
         Devuelve:
             iterable: secuencia ordenada de colores.
         """
-        # Parte 1: Cambiar el `raise` por tu código...
         return [i for i in range(self.n_colores)]
 
     def dimensiones(self):
@@ -82,7 +79,6 @@ class Flood:
         Devuelve:
             (int, int): alto y ancho de la grilla en ese orden.
         """
-        # Parte 1: Cambiar el `raise` por tu código...
         return self.alto, self.ancho
 
     def _cambiar_color(self, desde, hasta, color_actual, color_nuevo):
@@ -92,12 +88,12 @@ class Flood:
         self.tablero[hasta] = color_nuevo     #En este paso se pinta la celda al nuevo color
         self.coordenadas_cambiadas.add(hasta) #Dicha celda se guarda, para luego ser almacenada en la pila de deshacer
 
-        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))} #Esto calculo cual fue la celda que nos trajo a la celda en la que estamos, dicha celda ya fue pintada, asique no hace falta ir hacia ella
+        de_donde_vengo = {(-1 * abs(desde[0] - hasta[0]), -1 * abs(desde[1] - hasta[1]))} #Esto calcula cual fue la celda que nos trajo a la celda en la que estamos, dicha celda ya fue pintada, asique no hace falta ir hacia ella
 
         a_donde_voy = DIRECCIONES - de_donde_vengo #La interseccion entre estos dos conjuntos nos da las 3 direcciones a las que tenemos que ir a continuacion
 
         for tupla in a_donde_voy:
-            self._cambiar_color(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color_actual, color_nuevo)
+            self._cambiar_color(hasta, ((hasta[0] + tupla[0]), (hasta[1] + tupla[1])), color_actual, color_nuevo) #Llamada recursiva hacia las 3 celdas que tenemos que ir (la celda a la que no vamos es la celda de donde vinimos)
 
 
         '''
