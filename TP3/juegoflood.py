@@ -18,6 +18,7 @@ class JuegoFlood:
             n_colores: Cantidad maxima de colores a incluir en la grilla.
         """
         self.flood = Flood(alto, ancho)
+        self.n_colores = n_colores
         self.flood.mezclar_tablero(n_colores)
         self.mejor_n_movimientos, _ = self._calcular_movimientos()
         self.n_movimientos = 0
@@ -94,7 +95,7 @@ class JuegoFlood:
        casillas_por_paso = {}
        while not self.flood.esta_completado():
             for i in range(self.n_colores):  #Vamos a probar cada uno de los colores para ver cual es el que suma la mayor area.
-                if len(sucesion_de_pasos) > 0 and i == self.cambiar_color(sucesion_de_pasos[-1]): #No puede haber dos pasos con el mismo numero, este if lo evita
+                if sucesion_de_pasos.esta_vacia() and i == self.cambiar_color(sucesion_de_pasos[-1]): #No puede haber dos pasos con el mismo numero, este if lo evita
                     continue
                 self.cambiar_color(i) # i representa el color
                 tamano = self.flood.chequear_tamano_flood() #Vemos el tamano que produjo dicho cambio
